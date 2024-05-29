@@ -1,0 +1,150 @@
+<% layout('layouts/boilerplate') %>
+
+    <div class="container mt-5">
+        <div class="mb-3">
+            <div class="d-inline">
+                <label for="filter">Filter</label>
+                <select class="form-control-sm" name="filter" id="filter">
+                    <option value="All">All</option>
+                    <option value="Hardware">Hardware</option>
+                    <option value="Software">Software</option>
+                </select>
+            </div>
+            <div class="d-inline">
+                <label for="sort">Sort</label>
+                <select name="sort" id="sort" class="form-control-sm">
+                    <option value="SWRNumBig">SWRNum Big-Small</option>
+                    <option value="SWRNumBig">SWRNum Small-Big</option>
+                    <option value="Date Newest">Date: New-Old</option>
+                    <option value="Date Newest">Date: Old-New</option>
+                    <option value="Name: A-Z">A-Z</option>
+                    <option value="Name: Z-A">Z-A</option>
+                    <option value="Priority: 1-4">Priority: 1-4</option>
+                    <option value="Priority: 4-1">Priority: 4-1</option>
+
+                </select>
+            </div>
+        </div>
+
+
+        <input id="searchBar" class=" d-flex  form-control form-control-lg me-2 mb-3 text-center" type="search"
+            placeholder="Search" aria-label="Search">
+
+
+
+        <table
+            class="table table-bordered table-striped table-hover table-light border-dark align-middle table-responsive">
+            <thead>
+                <tr>
+                    <th class="text-center" scope="col">SWR#</th>
+                    <th class="text-center" scope="col">Date Submitted</th>
+                    <th class="text-center" scope="col">Originator</th>
+                    <th class="text-center" scope="col">Title</th>
+                    <th class="text-center" scope="col">System</th>
+                    <th class="text-center" scope="col">Priority</th>
+                    <th class="text-center" scope="col">Status</th>
+                    <th class="text-center" scope="col">Date Completed</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% tickets.forEach(ticket=> { %>
+                    <tr class="trow">
+                        <td class="text-center">
+                            <a href="/tickets/<%= ticket._id %>">
+                                <b>
+                                    <%= ticket.swrNum %>
+                                </b>
+                            </a>
+                            </th>
+                        <td class="text-center">
+                            <%= ticket.dateSubmitted.toISOString().substring(0,10) %>
+                        </td>
+                        <td class="text-center">
+                            <%= ticket.originator %>
+                        </td>
+                        <td class="text-center">
+                            <%= ticket.title %>
+                        </td>
+                        <td class="text-center">
+                            <%= ticket.system %>
+                        </td>
+                        <td class="text-center priority">
+                            <%= ticket.priority %>
+                        </td>
+                        <td class="text-center status">
+                            <%= ticket.status %>
+                        </td>
+                        <td class="text-center">
+                            <% if (ticket.dateClosed) { %>
+                                <%= ticket.dateClosed.toISOString().substring(0,10) %>
+                                    <% } %>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="/js/search.js"></script>
+    <script src="/js/indexStyles.js"></script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const filterMenu = document.querySelector('#filter');
+            const sortMenu = document.querySelector('#sort');
+
+            // Get URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const systemFilter = urlParams.get('system') || 'All';
+            const sortFilter = urlParams.get('sort');
+
+            // Set the filter menu to the selected value
+            filterMenu.value = systemFilter.charAt(0).toUpperCase() + systemFilter.slice(1);
+            if (sortFilter) {
+                sortMenu.value = sortFilter;
+            }
+
+            filterMenu.addEventListener('change', function () {
+                const filter = filterMenu.value;
+                let url = '/tickets';
+                if (filter !== 'All') {
+                    url += `?system=${filter}&`;
+                }
+                window.location.href = url;
+            });
+
+            sortMenu.addEventListener('change', function () {
+                const sort = sortMenu.value;
+                let url = new URL(window.location.href);
+                url.searchParams.set('sort', sort);
+                window.location.href = url.toString();
+            });
+        });
+    </script>
+
+    <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+    Launch demo modal
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>

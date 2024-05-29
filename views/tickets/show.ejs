@@ -1,0 +1,138 @@
+<% layout('layouts/boilerplate') %>
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Ticket <%= ticket.swrNum %></h1>
+
+        <div class="d-flex justify-content-between mb-4">
+            <form action="/tickets/<%=ticket._id%>/edit" class="me-2">
+                <button class="btn btn-primary">Edit</button>
+            </form>
+
+            <form action="/tickets/<%=ticket._id%>?_method=DELETE" method="POST" class="ms-2">
+                <button class="btn btn-danger">Delete <i data-vi="trash" data-vi-size="25"></i></button>
+            </form>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
+                    <strong>SWR Number:</strong>
+                    <%= ticket.swrNum %>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
+                    <strong>Originator:</strong>
+                    <%= ticket.originator %>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
+                    <strong>Date Submitted:</strong>
+                    <%= ticket.dateSubmitted.toISOString().substring(0,10) %>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
+                    <strong>Problem Captured:</strong>
+                    <%= ticket.captured %> Slot: <%= ticket.capturedSlot %>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
+                    <strong>Title:</strong>
+                    <%= ticket.title %>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
+                    <strong>Description:</strong>
+                    <div class="overflow-wrap-break-word">
+                        <%= ticket.description %>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
+                    <strong>Training Impacted:</strong>
+                    <%= ticket.impactedTraining %>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
+                    <strong>Priority Level:</strong>
+                    <%= ticket.priority %>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
+                    <strong>System:</strong>
+                    <%= ticket.system %>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
+                    <strong>Assigned To:</strong>
+                    <%= ticket.assignedTo %>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
+                    <strong>Status:</strong>
+                    <%= ticket.status %>
+                        <% if (ticket.status==='Deferred' ) { %>
+                            <span>ID: <%= ticket.deferredID %></span>
+                            <% } %>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3 ">
+                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
+                    <strong>Work Performed:</strong>
+                    <%= ticket.workPerformed %>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
+                    <strong>Validated By:</strong>
+                    <%= ticket.validatedBy %>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
+                    <strong>Date Closed:</strong>
+                    <% if (ticket.dateClosed) { %>
+                        <%= ticket.dateClosed.toISOString().substring(0,10) %>
+                            <% } %>
+                </div>
+            </div>
+        </div>
+        <div class="text-end">
+            <button class="btn btn-success" id="print_external">Print Report</button>
+        </div>
+        
+    </div>
+
+    <div class="ticketID" hidden><%= ticket._id %></div>
+
+
+    
+    <script>
+        function setPrint() {
+            const closePrint = () => {
+                document.body.removeChild(this);
+            };
+            this.contentWindow.onbeforeunload = closePrint;
+            this.contentWindow.onafterprint = closePrint;
+            this.contentWindow.print();
+        }
+
+        document.getElementById("print_external").addEventListener("click", () => {
+            const hideFrame = document.createElement("iframe");
+            hideFrame.onload = setPrint;
+            hideFrame.style.display = "none"; // hide iframe
+            const ticketID = document.querySelector('.ticketID').innerText;
+            hideFrame.src = `/tickets/${ticketID}/print`;
+
+            document.body.appendChild(hideFrame);
+        });
+    </script> 

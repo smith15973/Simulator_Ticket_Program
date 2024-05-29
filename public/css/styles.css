@@ -1,0 +1,11 @@
+body  {
+ background-color: #E7E7E7;
+}
+
+nav {
+    background-color: #F39237;
+}
+
+.overflow-wrap-break-word {
+    overflow-wrap: break-word;
+}

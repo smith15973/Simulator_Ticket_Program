@@ -1,0 +1,154 @@
+<% layout("layouts/boilerplate") %>
+
+    <style>
+        @media print {
+            .btn {
+                display: none;
+            }
+
+            .navbar {
+                display: none;
+            }
+        }
+    </style>
+
+
+    <body>
+        <div class="container mt-5">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-auto">
+                    <a href="/tickets/generate" class="btn btn-primary">Back</a>
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-success" id="printButton">Print</button>
+                </div>
+            </div>
+        </div>
+        <% for (let ticket of tickets) { %>
+            <div class="container mt-1">
+                <h1 class="text-center mb-4">Ticket <%= ticket.swrNum %>
+                </h1>
+                <div class="row">
+
+                    <!-- date and originator -->
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 mb-3 d-flex justify-content-between">
+                                <div class="border border-dark border-2 p-2">
+                                    Date Created: <%= ticket.dateSubmitted.toISOString().substring(0,10) %>
+                                </div>
+                                <div class="border border-dark border-2 p-2 text-end">
+                                    Originator: <%= ticket.originator %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="col-md-6 mb-3">
+                        <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
+                            <strong>Title:</strong>
+                            <%= ticket.title %>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
+                            <strong>Description:</strong>
+                            <div class="overflow-wrap-break-word">
+                                <%= ticket.description %>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 mb-3 d-flex justify-content-between">
+                                <div class="border border-dark border-2 p-2">
+                                    Training Impacted: <%= ticket.impactedTraining %>
+                                </div>
+                                <div class="border border-dark border-2 p-2 text-end">
+                                    Priority Level: <%= ticket.priority %>
+                                </div>
+                                <div class="border border-dark border-2 p-2 text-end">
+                                    System: <%= ticket.system %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- date and captured -->
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 mb-3 d-flex justify-content-between">
+                                <div class="border border-dark border-2 p-2">
+                                    Assigned To: <%= ticket.assignedTo %>
+                                </div>
+                                <div class="border border-dark border-2 p-2 text-end">
+                                    Captured: <%= ticket.captured %> Slot: <%= ticket.capturedSlot %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
+                            <strong>Status:</strong>
+                            <%= ticket.status %>
+                                <% if (ticket.status==='Deferred' ) { %>
+                                    <span>ID: <%= ticket.deferredID %></span>
+                                    <% } %>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3 ">
+                        <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
+                            <strong>Work Performed:</strong>
+                            <%= ticket.workPerformed %>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
+                            <strong>Validated By:</strong>
+                            <%= ticket.validatedBy %>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
+                            <strong>Date Closed:</strong>
+                            <% if (ticket.dateClosed) { %>
+                                <%= ticket.dateClosed.toISOString().substring(0,10) %>
+                                    <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="page-break-after: always;"></div>
+
+            <% } %>
+
+
+                <script>
+                    document.querySelector('#printButton').addEventListener('click', () => {
+                        window.print();
+                    })
+                </script>
+
+
+                <!-- bootstrap -->
+                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+                    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+                    crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+                    integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+                    crossorigin="anonymous"></script>
+
+                <!-- vivid icons -->
+                <script src="https://cdn.jsdelivr.net/npm/vivid-icons@1.0.10" type="text/javascript"></script>
+                <script src="https://unpkg.com/vivid-icons@1.0.10" type="text/javascript"></script>
+
+                </html>
