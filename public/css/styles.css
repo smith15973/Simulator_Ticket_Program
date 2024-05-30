@@ -2,10 +2,20 @@ body  {
  background-color: #E7E7E7;
 }
 
-nav {
+.nav {
     background-color: #F39237;
 }
 
 .overflow-wrap-break-word {
     overflow-wrap: break-word;
+}
+
+@media print {
+    .btn {
+        display: none !important;
+    }
+
+    .navbar {
+        display: none !important;
+    }
 }
