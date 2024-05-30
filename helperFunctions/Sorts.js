@@ -267,20 +267,20 @@ class Sorts {
     }
 
     //1-4 priority sort then by dateCreatedNew
-    static priority14(a, b) {
+    static priority41(a, b) {
         const aPriority = a.priority;
         const bPriority = b.priority;
 
-        if (aPriority > bPriority) {
+        if (aPriority < bPriority) {
             return 1;
-        } else if (aPriority < bPriority) {
+        } else if (aPriority > bPriority) {
             return -1;
         } else {
             return Sorts.dateCreatedNew(a, b);
         }
     }
     //4-1 priority sort then by dateCreatedNew
-    static priority41(a, b) {
+    static priority14(a, b) {
         const aPriority = a.priority;
         const bPriority = b.priority;
 

@@ -1,24 +1,28 @@
 <% layout('layouts/boilerplate') %>
 
-<style>
-    @media print {
-        #searchBar {
-            display: none;
+    <style>
+        @media print {
+            #searchBar {
+                display: none;
+            }
+
+            #sort {
+                display: none;
+            }
+
+            #filter {
+                display: none;
+            }
+
+            label {
+                display: none;
+            }
+
+            input {
+                display: none !important;
+            }
         }
-        #sort {
-            display: none;
-        }
-        #filter {
-            display: none;
-        }
-        label {
-            display: none;
-        }
-        input{
-            display: none !important;
-        }
-    }
-</style>
+    </style>
 
     <div class="container mt-5">
         <div class="mb-3">
@@ -33,14 +37,14 @@
             <div class="d-inline">
                 <label for="sort">Sort</label>
                 <select name="sort" id="sort" class="form-control-sm">
-                    <option value="SWRNumBig">SWRNum Big-Small</option>
-                    <option value="SWRNumBig">SWRNum Small-Big</option>
-                    <option value="Date Newest">Date: New-Old</option>
-                    <option value="Date Newest">Date: Old-New</option>
-                    <option value="Name: A-Z">A-Z</option>
-                    <option value="Name: Z-A">Z-A</option>
-                    <option value="Priority: 1-4">Priority: 1-4</option>
-                    <option value="Priority: 4-1">Priority: 4-1</option>
+                    <option value="swrHigh">SWRNum: High-Low</option>
+                    <option value="swrLow">SWRNum: Low-High</option>
+                    <option value="dateNew">Date: New-Old</option>
+                    <option value="dateOld">Date: Old-New</option>
+                    <option value="azName">Name: A-Z</option>
+                    <option value="zaName">Name: Z-A</option>
+                    <option value="p14">Priority: 1-4</option>
+                    <option value="p41">Priority: 4-1</option>
 
                 </select>
             </div>
@@ -126,7 +130,12 @@
 
             filterMenu.addEventListener('change', function () {
                 const filter = filterMenu.value;
-                let url = '/tickets';
+                const url = window.location.href;
+
+                const sortStart = url.indexOf("sort=");
+                const sortEnd = url.indexOf("&", sortStart);
+
+                let newURL = '/tickets';
                 if (filter !== 'All') {
                     url += `?system=${filter}&`;
                 }
@@ -135,9 +144,19 @@
 
             sortMenu.addEventListener('change', function () {
                 const sort = sortMenu.value;
-                let url = new URL(window.location.href);
-                url.searchParams.set('sort', sort);
-                window.location.href = url.toString();
+                let url = window.location.href;
+                const sortStart = url.indexOf("&sort=");
+                const sortEnd = url.indexOf("&", sortStart + 1);
+                let newURL;
+                if (sortStart !== -1 && sortEnd !== -1) {
+                    newURL = url.substring(0, sortStart); + url.substring(sortEnd, sortEnd) + `&sort=${sort}`;
+                } else if (sortStart !== -1) {
+                    newURL = url.substring(0, sortStart) + `&sort=${sort}`;
+                } else {
+                    newURL = url + `?&sort=${sort}`;
+                }
+                window.location.href = newURL;
+
             });
         });
     </script>

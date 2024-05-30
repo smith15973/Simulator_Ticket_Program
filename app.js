@@ -5,11 +5,13 @@ const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 
-const Sorts = require('./helperFunctions/Sorts');
+const SortSelector = require('./helperFunctions/sortSelector');
 const ParseDate = require('./helperFunctions/ParseDate');
 const MakeSWRNum = require('./helperFunctions/MakeSWRNum')
 const filterQuery = require('./helperFunctions/filterQueries')
 const searchQuery = require('./helperFunctions/searchQueries')
+const Sorts = require('./helperFunctions/Sorts')
+
 
 mongoose.connect('mongodb://localhost:27017/simTicketSystem');
 
@@ -66,20 +68,18 @@ app.get('/tickets', async (req, res) => {
     const search = req.query.search;
     if (search) {
         if (search !== '') {
-            console.log(req.query.search);
             query = searchQuery(req.query.search);
-            console.log(query);
             tickets = await Ticket.find(query);
         }
-        else{
+        else {
             tickets = await Ticket.find({});
         }
     } else {
-        tickets = await Ticket.find(req.query);
+        tickets = await Ticket.find();
+        console.log('HIIII')
     }
-
-    const sort = req.body.sort;
-    tickets.sort(Sorts.swrHighFirst);
+    const sort = SortSelector(req.query.sort);
+    tickets.sort(sort);
     res.render('tickets/index', {
         tickets, buffer: 300
     });

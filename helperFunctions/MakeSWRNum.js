@@ -13,7 +13,6 @@ function get4Digits(year, objs) {
         let swr = obj.swrNum; //get swrNum
         if (swr.slice(0, 2) === year) { //filter to matching years
             let digits = parseInt(swr.substring(3));
-            console.log(digits) //get 4 as int
             if (digits > maxDigits) { //find biggest in year
                 maxDigits = digits; //get biggest
             }
