@@ -1,3 +1,4 @@
+//database should be being used
 const searchBar = document.querySelector('#searchBar');
 const trs = document.querySelectorAll('.trow')
 
