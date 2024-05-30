@@ -9,7 +9,7 @@ const Sorts = require('./helperFunctions/Sorts');
 const ParseDate = require('./helperFunctions/ParseDate');
 const MakeSWRNum = require('./helperFunctions/MakeSWRNum')
 const filterQuery = require('./helperFunctions/filterQueries')
-
+const searchQuery = require('./helperFunctions/searchQueries')
 
 mongoose.connect('mongodb://localhost:27017/simTicketSystem');
 
@@ -62,33 +62,27 @@ app.get('/tickets/:id/print', async (req, res) => {
 
 //index of all tickets
 app.get('/tickets', async (req, res) => {
-    let query = {};
-
-    // Check if priorities are provided
-    if (req.query.priority) {
-        if (Array.isArray(req.query.priority)) {
-            query.priority = { $in: req.query.priority.map(Number) };
-        } else {
-            query.priority = Number(req.query.priority);
+    let tickets;
+    const search = req.query.search;
+    if (search) {
+        if (search !== '') {
+            console.log(req.query.search);
+            query = searchQuery(req.query.search);
+            console.log(query);
+            tickets = await Ticket.find(query);
         }
+        else{
+            tickets = await Ticket.find({});
+        }
+    } else {
+        tickets = await Ticket.find(req.query);
     }
 
-    // Check if systems are provided
-    if (req.query.system) {
-        if (Array.isArray(req.query.system)) {
-            query.system = { $in: req.query.system.map(String) };
-        } else {
-            query.system = String(req.query.system);
-        }
-    }
-
-
-
-
-
-    const tickets = await Ticket.find(req.query);
+    const sort = req.body.sort;
     tickets.sort(Sorts.swrHighFirst);
-    res.render('tickets/index', { tickets, filter: 'All' });
+    res.render('tickets/index', {
+        tickets, buffer: 300
+    });
 
 });
 

@@ -1,5 +1,25 @@
 <% layout('layouts/boilerplate') %>
 
+<style>
+    @media print {
+        #searchBar {
+            display: none;
+        }
+        #sort {
+            display: none;
+        }
+        #filter {
+            display: none;
+        }
+        label {
+            display: none;
+        }
+        input{
+            display: none !important;
+        }
+    }
+</style>
+
     <div class="container mt-5">
         <div class="mb-3">
             <div class="d-inline">
@@ -27,10 +47,8 @@
         </div>
 
 
-        <input id="searchBar" class=" d-flex  form-control form-control-lg me-2 mb-3 text-center" type="search"
+        <input id="searchBar" class=" d-flex form-control form-control-lg me-2 mb-3 text-center" type="search"
             placeholder="Search" aria-label="Search">
-
-
 
         <table
             class="table table-bordered table-striped table-hover table-light border-dark align-middle table-responsive">
@@ -47,40 +65,41 @@
                 </tr>
             </thead>
             <tbody>
-                <% tickets.forEach(ticket=> { %>
-                    <tr class="trow">
-                        <td class="text-center">
-                            <a href="/tickets/<%= ticket._id %>">
-                                <b>
-                                    <%= ticket.swrNum %>
-                                </b>
-                            </a>
-                            </th>
-                        <td class="text-center">
-                            <%= ticket.dateSubmitted.toISOString().substring(0,10) %>
-                        </td>
-                        <td class="text-center">
-                            <%= ticket.originator %>
-                        </td>
-                        <td class="text-center">
-                            <%= ticket.title %>
-                        </td>
-                        <td class="text-center">
-                            <%= ticket.system %>
-                        </td>
-                        <td class="text-center priority">
-                            <%= ticket.priority %>
-                        </td>
-                        <td class="text-center status">
-                            <%= ticket.status %>
-                        </td>
-                        <td class="text-center">
-                            <% if (ticket.dateClosed) { %>
-                                <%= ticket.dateClosed.toISOString().substring(0,10) %>
-                                    <% } %>
-                        </td>
-                    </tr>
-                    <% }) %>
+                <% let i=0 + buffer; %>
+                    <% for (let i=0; i < tickets.length;++i) { %>
+
+                        <tr class="trow">
+                            <td class="text-center">
+                                <a href="/tickets/<%= tickets[i]._id %>">
+                                    <b>
+                                        <%= tickets[i].swrNum %>
+                                    </b>
+                                </a>
+                            <td class="text-center">
+                                <%= tickets[i].dateSubmitted.toISOString().substring(0,10) %>
+                            </td>
+                            <td class="text-center">
+                                <%= tickets[i].originator %>
+                            </td>
+                            <td class="text-center">
+                                <%= tickets[i].title %>
+                            </td>
+                            <td class="text-center">
+                                <%= tickets[i].system %>
+                            </td>
+                            <td class="text-center priority">
+                                <%= tickets[i].priority %>
+                            </td>
+                            <td class="text-center status">
+                                <%= tickets[i].status %>
+                            </td>
+                            <td class="text-center">
+                                <% if (tickets[i].dateClosed) { %>
+                                    <%= tickets[i].dateClosed.toISOString().substring(0,10) %>
+                                        <% } %>
+                            </td>
+                        </tr>
+                        <% } %>
             </tbody>
         </table>
     </div>
@@ -124,27 +143,28 @@
     </script>
 
     <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-    Launch demo modal
-  </button>
-  
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+        Launch demo modal
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
         </div>
-        <div class="modal-body">
-          ...
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
     </div>
-  </div>
