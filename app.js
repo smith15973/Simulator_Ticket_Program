@@ -11,7 +11,7 @@ const MongoStore = require("connect-mongo");
 const ticketRoutes = require('./routes/tickets');
 
 
-//const dbURL = process.env.DB_URL;
+//const dbURL = process.env.DB_URL; 
 const dbURL = 'mongodb://localhost:27017/simTicketSystem'
 mongoose.connect(dbURL);
 
