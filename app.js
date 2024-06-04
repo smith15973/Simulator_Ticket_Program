@@ -67,11 +67,11 @@ app.all('*', (req, res, next) => {
 })
 
 
-// app.use((err,req,res,next) => {
-//     const {statusCode = 500} = err;
-//     if (!err.essage) err.message = 'Oh No, Something Went Wrong!';
-//     res.status(statusCode).render('notFound', {err});
-// })
+app.use((err,req,res,next) => {
+    const {statusCode = 500} = err;
+    if (!err.essage) err.message = 'Oh No, Something Went Wrong!';
+    res.status(statusCode).render('tickets/notFound', {err});
+})
 
 /************LISTENER********************/
 const port = process.env.PORT || 3000;
