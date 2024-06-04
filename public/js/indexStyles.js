@@ -15,3 +15,11 @@ for (statuss of statuses) {
         statuss.style.color = 'green';
     }
 }
+
+const tableRows = document.querySelectorAll(".trow");
+        for (const tableRow of tableRows) {
+            tableRow.addEventListener("click", function () {
+                //window.open(this.dataset.href, "_blank");
+                window.location.href = this.dataset.href;
+            });
+        }

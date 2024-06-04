@@ -41,7 +41,7 @@ descriptors = [
     'Sky',
     'Dusty',
     'Diamond'
-]
+] 
 
 
 const mongoose = require('mongoose');
@@ -61,7 +61,7 @@ const sample = (array) => array[Math.floor(Math.random() * array.length)];
 const seedDB = async () => {
     await Ticket.deleteMany({});
 
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < 899; i++) {
         const random4 = Math.floor(Math.random() * 4);
         const randomTrain = Math.floor(Math.random() * 2);
         const randomSystem = Math.floor(Math.random() * 2);

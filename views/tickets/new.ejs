@@ -9,9 +9,12 @@
                 <label for="originator" class="form-label">Name:</label>
                 <input class="form-control" type="text" list="originators" name="originator" id="originator" required>
                 <datalist id="originators">
-                    <% for (let ticket of tickets) { %>
-                        <option value="<%=ticket.originator%>"></option>
-                        <% } %>
+                    <% const names=new Set(); for (let ticket of tickets) { %>
+                        <%if (!names.has(ticket.originator)) { names.add(ticket.originator);%>
+                            <option value="<%=ticket.originator%>">
+                                <%=ticket.originator%>
+                            </option>
+                            <% }} %>
                 </datalist>
             </div>
 
@@ -19,8 +22,9 @@
 
             <div class="mb-3">
                 <label for="dateSubmitted" class="form-label">Date:</label>
-                <input type="date" value="<%= new Date().toISOString().split('T')[0]  %>" class="form-control" id="dateSubmitted" name="dateSubmitted"
-                    required>
+                <input type="date" max="<%= new Date().toISOString().split('T')[0]  %>"
+                    value="<%= new Date().toISOString().split('T')[0]  %>" class="form-control" id="dateSubmitted"
+                    name="dateSubmitted" required>
             </div>
 
             <div class="row mb-3">
@@ -79,8 +83,10 @@
 
 
             <div class="mb-3">
-                <label for="priority" class="form-label">Priority Level: <span data-bs-toggle="tooltip"
-                        title="1: Critical to current training in development. Training cannot proceed without the problem being corrected. The initiator shall submit a condition report. &#10;2: Training can be performed but may require instructor work around. If the condition is adverse to quality of the training being performed, the initiator shall submit a condition report &#10;3: Correct when work can be performed efficiently &#10;4: Pending Reference Unit change or enhancement request">&#9432</span></label>
+                <label for="priority" class="form-label">
+                    Priority Level <span style=":hover {cursor: pointer;}" type="button" class="bold" data-bs-toggle="modal"
+                    data-bs-target="#infoButton">&#9432</span>
+                </label>
                 <select class="form-select" id="priority" name="priority" required>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -102,15 +108,38 @@
         </form>
     </div>
 
-    <script>
-        document.querySelectorAll('input[type="radio"][name="captured"]').forEach(function (radio) {
-            radio.addEventListener('change', function () {
-                var capturedSlotInput = document.getElementById('capturedSlotInput');
-                if (radio.value === 'SavedIC#' || radio.value === 'Snapped') {
-                    capturedSlotInput.classList.remove('d-none');
-                } else {
-                    capturedSlotInput.classList.add('d-none');
-                }
-            });
-        });
-    </script>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="infoButton" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Priority Definitions</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-sm mt-4">
+                        <p>
+                            1: Critical to current training in development. Training cannot proceed without the problem being corrected. The initiator shall submit a condition report.
+                        </p>
+                        <p>
+                            2: Training can be performed but may require instructor work around. If the condition is adverse to quality of the training being performed, the initiator shall submit a condition report.
+                        </p>
+                        <p>
+                            3: Correct when work can be performed efficiently.
+                        </p>
+                        <p>
+                            4: Pending Reference Unit change or enhancement request.
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="/js/newPage.js"></script>

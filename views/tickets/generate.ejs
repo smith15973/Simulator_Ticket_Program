@@ -1,11 +1,5 @@
 <% layout("layouts/boilerplate") %>
-    <style>
-        .form-label {
-            font-weight: bold;
-            font-size: 16px;
-            /* Adjust the size as needed */
-        }
-    </style>
+    <link rel="stylesheet" href="/css/generatePage.css">
 
     <div class="container-sm mt-4">
         <div class="mb-1">
@@ -15,186 +9,14 @@
             </div>
         </div>
 
-
-        <form action="/tickets/report/print">
-            <div class="mb-3 row">
-                <div class="col-sm-6">
-                    <label class="form-label">SWR Number
-                    </label>
-                    <div class="input-group">
-                        <label for="swrMin" class="input-group-text">From</label>
-                        <input type="text" class="form-control" id="swrMin" name="swrMin">
-                        <label for="swrMax" class="input-group-text">To</label>
-                        <input type="text" class="form-control" id="swrMax" name="swrMax">
-                    </div>
+        <form id="generateForm" action="/tickets/report/print">
+            <%- include('../partials/filter') %>
+                <div class="text-center">
+                    <button style="width: 200px;" class="btn btn btn-success">View Report</button>
                 </div>
-                <div class="col-sm-3">
-                    <label class="form-label">System</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="system" id="hardware" value="Hardware">
-                        <label class="form-check-label" for="hardware">Hardware</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="system" id="software" value="Software">
-                        <label class="form-check-label" for="software">Software</label>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <label class="form-label">Training Impacted</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="impactedTraining" id="yesAffected"
-                            value="Yes">
-                        <label class="form-check-label" for="yesAffected">Yes</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="impactedTraining" id="noAffected"
-                            value="No">
-                        <label class="form-check-label" for="noAffected">No</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-
-                <div class="col-md-6">
-                    <label class="form-label">Date Submitted</label>
-                    <div class="input-group">
-                        <label for="dateSubMin" class="input-group-text">From</label>
-                        <input type="date" class="form-control" id="dateSubMin" name="dateSubMin">
-                        <label for="dateSubMax" class="input-group-text">To</label>
-                        <input type="date" class="form-control" id="dateSubMax" name="dateSubMax">
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label">Date Closed</label>
-                    <div class="input-group">
-                        <label for="dateClosedMin" class="input-group-text">From</label>
-                        <input type="date" class="form-control" id="dateClosedMin" name="dateClosedMin">
-                        <label for="dateClosedMax" class="input-group-text">To</label>
-                        <input type="date" class="form-control" id="dateClosedMax" name="dateClosedMax">
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="mb-3 row">
-
-
-                <div class="col-sm-4">
-                    <label class="form-label">Problem Captured</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="captured" id="savedIC" value="SavedIC#">
-                        <label class="form-check-label" for="savedIC">Saved IC#</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="captured" id="snapped" value="Snapped">
-                        <label class="form-check-label" for="snapped">Snapped</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="captured" id="notCaptured"
-                            value="Not Captured">
-                        <label class="form-check-label" for="notCaptured">Not Captured</label>
-                    </div>
-                </div>
-
-                <div class="col-sm-4">
-                    <label class="form-label">Status</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="Unassigned" name="status"
-                            id="unassigned">
-                        <label class="form-check-label" for="unassigned">Unassigned</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="status" id="inProgress"
-                            value="In Progress">
-                        <label class="form-check-label" for="inProgress">In Progress</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="status" id="readyToTest"
-                            value="Ready To Test">
-                        <label class="form-check-label" for="readyToTest">Ready to Test</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="status" id="deferred" value="Deferred">
-                        <label class="form-check-label" for="deferred">Deferred</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="status" id="closed" value="Closed">
-                        <label class="form-check-label" for="closed">Closed</label>
-                    </div>
-                </div>
-
-                <div class="col-sm-4">
-                    <label class="form-label">Priority Level</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="priority" id="priority1" value="1">
-                        <label class="form-check-label" for="priority1">1</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="priority" id="priority2" value="2">
-                        <label class="form-check-label" for="priority2">2</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="priority" id="priority3" value="3">
-                        <label class="form-check-label" for="priority3">3</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="priority" id="priority4" value="4">
-                        <label class="form-check-label" for="priority4">4</label>
-                    </div>
-                </div>
-
-
-            </div>
-
-
-
-
-            <div class="mb-3 row">
-                <div class="col-md-4">
-                    <label class="form-label">Originator</label>
-                    <input type="text" class="form-control" id="originator" name="originator">
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label">Assigned To</label>
-                    <input type="text" class="form-control" id="assignedTo" name="assignedTo">
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label">Validated By</label>
-                    <input type="text" class="form-control" id="validator" name="validatedBy">
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <div class="col-md-4">
-                    <label class="form-label">Title Contains</label>
-                    <input type="text" class="form-control" id="title" name="title">
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label">Description Contains</label>
-                    <input type="text" class="form-control" id="description" name="description">
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label">Work Performed Contains</label>
-                    <input type="text" class="form-control" id="workPerformed" name="workPerformed">
-                </div>
-            </div>
-
-            <div class="text-center">
-                <button class="btn btn btn-success">View Report</button>
-            </div>
 
         </form>
     </div>
 
 
-    <script>
-        document.querySelector('#resetButton').addEventListener('click', () => {
-            document.forms[1].reset();
-        });
-
-    </script>
+    <script src="/js/generatePage.js"></script>

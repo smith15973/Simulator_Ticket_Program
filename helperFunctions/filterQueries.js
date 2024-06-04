@@ -47,29 +47,29 @@ function getQuery(req) {
     }
 
     //check if swr range is provided
-    if (req.query.swrMin !== '' && req.query.swrMax !== '') {
+    if (req.query.swrMin && req.query.swrMin !== '' && req.query.swrMax && req.query.swrMax !== '') {
         query.swrNum = { $gte: req.query.swrMin, $lte: req.query.swrMax };
-    } else if (req.query.swrMin !== '') {
+    } else if (req.query.swrMin && req.query.swrMin !== '') {
         query.swrNum = { $gte: req.query.swrMin }
-    } else if (req.query.swrMax !== '') {
+    } else if (req.query.swrMax && req.query.swrMax !== '') {
         query.swrNum = { $lte: req.query.swrMax }
     }
 
     //check if date submitted range is provided
-    if (req.query.dateSubMin !== '' && req.query.dateSubMax !== '') {
+    if (req.query.dateSubMin && req.query.dateSubMin !== '' && req.query.dateSubMax && req.query.dateSubMax !== '') {
         query.dateSubmitted = { $gte: req.query.dateSubMin, $lte: req.query.dateSubMax };
-    } else if (req.query.dateSubMin !== '') {
+    } else if (req.query.dateSubMin && req.query.dateSubMin !== '') {
         query.dateSubmitted = { $gte: req.query.dateSubMin }
-    } else if (req.query.dateSubMax !== '') {
+    } else if (req.query.dateSubMax && req.query.dateSubMax !== '') {
         query.dateSubmitted = { $lte: req.query.dateSubMax }
     }
 
     //check if date closed range is provided
-    if (req.query.dateClosedMin !== '' && req.query.dateClosedMax !== '') {
+    if (req.query.dateClosedMin && req.query.dateClosedMin !== '' && req.query.dateClosedMax && req.query.dateClosedMax !== '') {
         query.dateClosed = { $gte: req.query.dateClosedMin, $lte: req.query.dateClosedMax };
-    } else if (req.query.dateClosedMin !== '') {
+    } else if (req.query.dateClosedMin && req.query.dateClosedMin !== '') {
         query.dateClosed = { $gte: req.query.dateClosedMin }
-    } else if (req.query.dateClosedMax !== '') {
+    } else if (req.query.dateClosedMax && req.query.dateClosedMax !== '') {
         query.dateClosed = { $lte: req.query.dateClosedMax }
     }
 
@@ -102,6 +102,7 @@ function getQuery(req) {
     if (req.query.workPerformed && req.query.workPerformed !== '') {
         query.workPerformed = { $regex: req.query.workPerformed, $options: 'i' }
     }
+
     return query;
 }
 module.exports = getQuery

@@ -1,4 +1,4 @@
-//database should be being used
+//database should be being used in future versions
 const searchBar = document.querySelector('#searchBar');
 const trs = document.querySelectorAll('.trow')
 

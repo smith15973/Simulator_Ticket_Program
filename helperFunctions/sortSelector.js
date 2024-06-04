@@ -1,26 +1,49 @@
-const Sorts = require('./Sorts')
+//onst Sorts = require('./Sorts')
 
-function sortSelect(sort) {
-    switch (sort) {
+function SortSelector(sortOption) {
+    switch (sortOption) {
         case 'swrHigh':
-            return Sorts.swrHighFirst;
+            return { swrNum: -1 };
         case 'swrLow':
-            return Sorts.swrLowFirst;
+            return { swrNum: 1 };
         case 'dateNew':
-            return Sorts.dateCreatedNew;
+            return { dateSubmitted: -1 };
         case 'dateOld':
-            return Sorts.dateCreatedOld;
+            return { dateSubmitted: 1 };
         case 'azName':
-            return Sorts.azOriginator;
+            return { originator: 1};
         case 'zaName':
-            return Sorts.zaOriginator;
+            return { originator: -1};
         case 'p14':
-            return Sorts.priority14;
+            return { priority: 1 };
         case 'p41':
-            return Sorts.priority41;
+            return { priority: -1 };
         default:
-            return Sorts.swrHighFirst;
+            return { swrNum: -1 };
     }
 }
-console.log(sortSelect);
-module.exports = sortSelect;
+
+
+// function sortSelect(sort) {
+//     switch (sort) {
+//         case 'swrHigh':
+//             return Sorts.swrHighFirst;
+//         case 'swrLow':
+//             return Sorts.swrLowFirst;
+//         case 'dateNew':
+//             return Sorts.dateCreatedNew;
+//         case 'dateOld':
+//             return Sorts.dateCreatedOld;
+//         case 'azName':
+//             return Sorts.azOriginator;
+//         case 'zaName':
+//             return Sorts.zaOriginator;
+//         case 'p14':
+//             return Sorts.priority14;
+//         case 'p41':
+//             return Sorts.priority41;
+//         default:
+//             return Sorts.swrHighFirst;
+//     }
+// }
+module.exports = SortSelector;

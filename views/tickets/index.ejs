@@ -1,40 +1,20 @@
 <% layout('layouts/boilerplate') %>
 
-    <style>
-        @media print {
-            #searchBar {
-                display: none;
-            }
-
-            #sort {
-                display: none;
-            }
-
-            #filter {
-                display: none;
-            }
-
-            label {
-                display: none;
-            }
-
-            input {
-                display: none !important;
-            }
-        }
-    </style>
+<link rel="stylesheet" href="/css/indexPage.css">
 
     <div class="container mt-5">
-        <div class="mb-3">
-            <div class="d-inline">
-                <label for="filter">Filter</label>
-                <select class="form-control-sm" name="filter" id="filter">
-                    <option value="All">All</option>
-                    <option value="Hardware">Hardware</option>
-                    <option value="Software">Software</option>
-                </select>
+        <div class="d-flex justify-content-between mb-4 mb-3">
+            <div class="">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Filter <img
+                    src="/svg/filter.svg"
+                    alt="trashcan"
+                    height="25"
+                    width="20" />
+                </button>
             </div>
-            <div class="d-inline">
+            <div class="">
                 <label for="sort">Sort</label>
                 <select name="sort" id="sort" class="form-control-sm">
                     <option value="swrHigh">SWRNum: High-Low</option>
@@ -45,13 +25,11 @@
                     <option value="zaName">Name: Z-A</option>
                     <option value="p14">Priority: 1-4</option>
                     <option value="p41">Priority: 4-1</option>
-
                 </select>
             </div>
         </div>
 
-
-        <input id="searchBar" class=" d-flex form-control form-control-lg me-2 mb-3 text-center" type="search"
+        <input id="searchBar" class="d-flex form-control form-control-lg me-2 mb-3 text-center" type="search"
             placeholder="Search" aria-label="Search">
 
         <table
@@ -69,121 +47,97 @@
                 </tr>
             </thead>
             <tbody>
-                <% let i=0 + buffer; %>
-                    <% for (let i=0; i < tickets.length;++i) { %>
-
-                        <tr class="trow">
-                            <td class="text-center">
-                                <a href="/tickets/<%= tickets[i]._id %>">
-                                    <b>
-                                        <%= tickets[i].swrNum %>
-                                    </b>
-                                </a>
-                            <td class="text-center">
-                                <%= tickets[i].dateSubmitted.toISOString().substring(0,10) %>
-                            </td>
-                            <td class="text-center">
-                                <%= tickets[i].originator %>
-                            </td>
-                            <td class="text-center">
-                                <%= tickets[i].title %>
-                            </td>
-                            <td class="text-center">
-                                <%= tickets[i].system %>
-                            </td>
-                            <td class="text-center priority">
-                                <%= tickets[i].priority %>
-                            </td>
-                            <td class="text-center status">
-                                <%= tickets[i].status %>
-                            </td>
-                            <td class="text-center">
-                                <% if (tickets[i].dateClosed) { %>
-                                    <%= tickets[i].dateClosed.toISOString().substring(0,10) %>
-                                        <% } %>
-                            </td>
-                        </tr>
-                        <% } %>
+                <% for (let i=0; i < tickets.length; ++i) { %>
+                    <tr class='trow clickable-row' data-href='/tickets/<%= tickets[i]._id %>'>
+                        <td class="text-center">
+                            <a href="/tickets/<%= tickets[i]._id %>">
+                                <b>
+                                    <%= tickets[i].swrNum %>
+                                </b>
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <%= tickets[i].dateSubmitted.toISOString().substring(0, 10) %>
+                        </td>
+                        <td class="text-center">
+                            <%= tickets[i].originator %>
+                        </td>
+                        <td class="text-center">
+                            <%= tickets[i].title %>
+                        </td>
+                        <td class="text-center">
+                            <%= tickets[i].system %>
+                        </td>
+                        <td class="text-center priority">
+                            <%= tickets[i].priority %>
+                        </td>
+                        <td class="text-center status">
+                            <%= tickets[i].status %>
+                        </td>
+                        <td class="text-center">
+                            <% if (tickets[i].dateClosed) { %>
+                                <%= tickets[i].dateClosed.toISOString().substring(0, 10) %>
+                                    <% } %>
+                        </td>
+                    </tr>
+                    <% } %>
             </tbody>
         </table>
+
+        <div class="d-flex justify-content-between">
+            <% if (currentPage> 1) { %>
+                <a href="/tickets?page=<%= currentPage - 1 %><%= queryString %>" class="btn btn-primary">Previous</a>
+                <% } else { %>
+                    <span class="btn btn-secondary disabled">Previous</span>
+                    <% } %>
+
+                        <% if (currentPage < totalPages) { %>
+                            <a href="/tickets?page=<%= currentPage + 1 %><%= queryString %>"
+                                class="btn btn-primary">Next</a>
+                            <% } else { %>
+                                <span class="btn btn-secondary disabled">Next</span>
+                                <% } %>
+        </div>
     </div>
 
-    <script src="/js/search.js"></script>
-    <script src="/js/indexStyles.js"></script>
-
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const filterMenu = document.querySelector('#filter');
-            const sortMenu = document.querySelector('#sort');
-
-            // Get URL parameters
-            const urlParams = new URLSearchParams(window.location.search);
-            const systemFilter = urlParams.get('system') || 'All';
-            const sortFilter = urlParams.get('sort');
-
-            // Set the filter menu to the selected value
-            filterMenu.value = systemFilter.charAt(0).toUpperCase() + systemFilter.slice(1);
-            if (sortFilter) {
-                sortMenu.value = sortFilter;
-            }
-
-            filterMenu.addEventListener('change', function () {
-                const filter = filterMenu.value;
-                const url = window.location.href;
-
-                const sortStart = url.indexOf("sort=");
-                const sortEnd = url.indexOf("&", sortStart);
-
-                let newURL = '/tickets';
-                if (filter !== 'All') {
-                    url += `?system=${filter}&`;
-                }
-                window.location.href = url;
-            });
-
-            sortMenu.addEventListener('change', function () {
-                const sort = sortMenu.value;
-                let url = window.location.href;
-                const sortStart = url.indexOf("&sort=");
-                const sortEnd = url.indexOf("&", sortStart + 1);
-                let newURL;
-                if (sortStart !== -1 && sortEnd !== -1) {
-                    newURL = url.substring(0, sortStart); + url.substring(sortEnd, sortEnd) + `&sort=${sort}`;
-                } else if (sortStart !== -1) {
-                    newURL = url.substring(0, sortStart) + `&sort=${sort}`;
-                } else {
-                    newURL = url + `?&sort=${sort}`;
-                }
-                window.location.href = newURL;
-
-            });
-        });
-    </script>
-
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-        Launch demo modal
-    </button>
-
     <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Filter Results</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    ...
+                    <style>
+                        .form-label {
+                            font-weight: bold;
+                            font-size: 16px;
+                        }
+                    </style>
+
+                    <div class="container-sm mt-4">
+                        <div class="mb-1">
+                            <h1 class="text-center">Filter Results</h1>
+                            <div class="text-end">
+                                <button id="resetButton" class="btn btn-warning">Reset</button>
+                            </div>
+                        </div>
+
+                        <form id="formFilter" action="/tickets">
+                            <%- include('../partials/filter') %>
+                        </form>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button form="formFilter" type="submit" class="btn btn-primary">Save Filters</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <script src="/js/search.js"></script>
+    <script src="/js/indexStyles.js"></script>
+    <script src="/js/sortSelect.js"></script>
+    <script src="/js/filterMemory.js"></script>

@@ -1,0 +1,22 @@
+@media print {
+    #searchBar {
+        display: none;
+    }
+
+    #sort {
+        display: none;
+    }
+
+    #filter {
+        display: none;
+    }
+
+    label {
+        display: none;
+    }
+
+    input {
+        display: none !important;
+    }
+    /* @page {size: landscape} */
+}

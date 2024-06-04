@@ -9,7 +9,13 @@
             </form>
 
             <form action="/tickets/<%=ticket._id%>?_method=DELETE" method="POST" class="ms-2">
-                <button class="btn btn-danger">Delete <i data-vi="trash" data-vi-size="25"></i></button>
+                <button class="btn btn-danger">Delete <img
+                    src="/svg/trash.svg"
+                    alt="trashcan"
+                    height="25"
+                    width="20" />
+                     </button>
+                <!-- <i data-vi="trash" data-vi-size="25"></i> -->
             </form>
         </div>
 
@@ -107,7 +113,11 @@
             </div>
         </div>
         <div class="text-end">
-            <button class="btn btn-success" id="print_external">Print Report</button>
+            <button class="btn btn-success" id="print_external">Print Report <img
+                src="/svg/printer.svg"
+                alt="trashcan"
+                height="25"
+                width="20" /></button>
         </div>
         
     </div>
@@ -115,24 +125,4 @@
     <div class="ticketID" hidden><%= ticket._id %></div>
 
 
-    
-    <script>
-        function setPrint() {
-            const closePrint = () => {
-                document.body.removeChild(this);
-            };
-            this.contentWindow.onbeforeunload = closePrint;
-            this.contentWindow.onafterprint = closePrint;
-            this.contentWindow.print();
-        }
-
-        document.getElementById("print_external").addEventListener("click", () => {
-            const hideFrame = document.createElement("iframe");
-            hideFrame.onload = setPrint;
-            hideFrame.style.display = "none"; // hide iframe
-            const ticketID = document.querySelector('.ticketID').innerText;
-            hideFrame.src = `/tickets/${ticketID}/print`;
-
-            document.body.appendChild(hideFrame);
-        });
-    </script> 
+    <script src="/js/showPage.js"></script>
