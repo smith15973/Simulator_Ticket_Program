@@ -59,7 +59,7 @@ const sessionConfig = {
     }
 }
 
-// app.use('/tickets', ticketRoutes);
+app.use('/tickets', ticketRoutes);
 
 
 app.all('*', (req, res, next) => {
