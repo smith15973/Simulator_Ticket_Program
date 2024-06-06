@@ -1,22 +1,29 @@
-// defferedID Toggle
-function toggleCompanyID() {
-    const statusChoices = document.getElementById('statusChoices');
-    var status = document.getElementById('status').value;
-    var companyIDField = document.getElementById('companyIDField');
-    if (status === 'Deferred') {
-        companyIDField.style.display = 'block';
-        statusChoices.classList.add('col-sm-6')
-    } else {
-        companyIDField.style.display = 'none';
-        statusChoices.classList.remove('col-sm-6')
-    }
-}
+// // defferedID Toggle
+// function toggleCompanyID() {
+//     const statusChoices = document.getElementById('statusChoices');
+//     var status = document.getElementById('status').value;
+//     var companyIDField = document.getElementById('companyIDField');
+//     if (status === 'Deferred') {
+//         companyIDField.style.display = 'block';
+//         statusChoices.classList.add('col-sm-6')
+//     } else {
+//         companyIDField.style.display = 'none';
+//         statusChoices.classList.remove('col-sm-6')
+//     }
+// }
 
 // Initialize the companyIDField display based on the current status
 document.addEventListener('DOMContentLoaded', function () {
-    toggleCompanyID();
+    // toggleCompanyID();
+    console.log(document.querySelector('#dateClosed').value);
 });
 
+const dateClosedObject = document.querySelector('#dateClosed');
+function toggleClosedStatus() {
+if (dateClosedObject.value !== '') {
+    document.querySelector('#closedStatus').setAttribute('selected',true)
+}
+}
 
 
 // Captured Slot Toggle

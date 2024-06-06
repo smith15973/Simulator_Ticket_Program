@@ -1,9 +1,13 @@
 <% layout('layouts/boilerplate') %>
     <div class="container mt-5">
+        
         <h1 class="text-center mb-4">Update Ticket <%= ticket.swrNum %>
         </h1>
 
         <form class="p-3" action="/tickets/<%= ticket._id %>?_method=PUT" method="POST">
+            <div class="text-end">
+                <button class="btn btn-primary text-end" type="submit">Save</button>
+            </div>
             <div class="mb-3">
                 <label for="swrNum" class="form-label">SWR Number</label>
                 <input type="text" class="form-control" name="swrNum" id="swrNum" value="<%= ticket.swrNum %>" required>
@@ -112,9 +116,9 @@
             </div>
 
             <div class="row mb-3">
-                <div id="statusChoices">
+                <div id="statusChoices" class="col-sm-6">
                     <label for="status" class="form-label">Status</label>
-                    <select id="status" name="status" class="form-select" onchange="toggleCompanyID()">
+                    <select id="status" name="status" class="form-select">
                         <option value="Unassigned" <%=ticket.status==='Unassigned' ? 'selected' : '' %>>Unassigned
                         </option>
                         <option value="In Progress" <%=ticket.status==='In Progress' ? 'selected' : '' %>>In Progress
@@ -122,12 +126,12 @@
                         <option value="Ready To Test" <%=ticket.status==='Ready To Test' ? 'selected' : '' %>>Ready To
                             Test</option>
                         <option value="Deferred" <%=ticket.status==='Deferred' ? 'selected' : '' %>>Deferred</option>
-                        <option value="Closed" <%=ticket.status==='Closed' ? 'selected' : '' %>>Closed</option>
+                        <option id="closedStatus" value="Closed" <%=ticket.status==='Closed' ? 'selected' : '' %>>Closed</option>
                     </select>
                 </div>
 
-                <div class="col-sm-6" id="companyIDField" style="display: none;">
-                    <label for="deferredID" class="form-label">Coreys ID#</label>
+                <div class="col-sm-6" id="companyIDField">
+                    <label for="deferredID" class="form-label">Corys ID#</label>
                     <input type="text" class="form-control" name="deferredID" id="deferredID"
                         value="<%= ticket.deferredID %>">
                 </div>
@@ -154,7 +158,7 @@
 
             <div class="mb-3">
                 <label for="dateClosed" class="form-label">Date Closed</label>
-                <input max="<%= new Date().toISOString().split('T')[0] %>" type="date" class="form-control"
+                <input onchange="toggleClosedStatus()" max="<%= new Date().toISOString().split('T')[0] %>" type="date" class="form-control"
                     name="dateClosed" id="dateClosed" <% if (ticket.dateClosed) { %> value="<%=
                     ticket.dateClosed.toISOString().substring(0,10) %>" <% } %>>
             </div>

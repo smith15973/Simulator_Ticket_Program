@@ -9,9 +9,11 @@ const ejsMate = require('ejs-mate');
 const session = require('express-session');
 const MongoStore = require("connect-mongo");
 const ticketRoutes = require('./routes/tickets');
+var favicon = require('serve-favicon');
 
 
-//const dbURL = process.env.DB_URL; 
+
+
 const dbURL = 'mongodb://localhost:27017/simTicketSystem'
 mongoose.connect(dbURL);
 
@@ -27,10 +29,11 @@ app.engine('ejs', ejsMate);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-
+app.use(favicon(path.join(__dirname, 'public', 'images', 'ticketFavicon.png')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+
 
 
 const store = MongoStore.create({

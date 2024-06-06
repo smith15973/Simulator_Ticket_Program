@@ -1,13 +1,13 @@
 <% layout('layouts/boilerplate') %>
 
     <div class="container-sm mt-5">
-        <h1 class="text-center">Submit a Ticket</h1>
+        <h1 class="text-center">Submit Ticket</h1>
 
         <form class="p-3" action="/tickets" method="POST">
 
             <div class="mb-3">
-                <label for="originator" class="form-label">Name:</label>
-                <input class="form-control" type="text" list="originators" name="originator" id="originator" required>
+                <label for="originator" class="form-label">Originator:</label>
+                <input class="form-control" type="text" list="originators" name="originator" id="originator" placeholder="John Smith" required>
                 <datalist id="originators">
                     <% const names=new Set(); for (let ticket of tickets) { %>
                         <%if (!names.has(ticket.originator)) { names.add(ticket.originator);%>
@@ -59,9 +59,6 @@
                 </div>
             </div>
 
-
-
-
             <div class="mb-3">
                 <label for="title" class="form-label">Title:</label>
                 <input type="text" class="form-control" id="title" name="title" required>
@@ -70,6 +67,11 @@
             <div class="mb-3">
                 <label for="description" class="form-label">Description:</label>
                 <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="descriptionAttachment" class="form-label">Attatchment:</label>
+                <input type="file" class="form-control" name="descriptionAttachment" id="descriptionAttachment" accept="image/*,.pdf,.docx,.xlsx,.doc" multiple> 
             </div>
 
             <div class="mb-3">

@@ -1,8 +1,18 @@
 const prioritys = document.querySelectorAll('.priority');
 
 for (priority of prioritys) {
-    if (priority.innerText === "4") {
+    priority.style.fontWeight = 'bold';
+    if (priority.innerText === "1") {
         priority.style.color = 'red';
+    }
+    if (priority.innerText === "2") {
+        priority.style.color = 'darkorange';
+    }
+    if (priority.innerText === "3") {
+        priority.style.color = '#9B870C';
+    }
+    if (priority.innerText === "4") {
+        priority.style.color = 'black';
     }
 }
 
