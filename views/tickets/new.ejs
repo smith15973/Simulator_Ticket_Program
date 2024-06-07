@@ -3,7 +3,7 @@
     <div class="container-sm mt-5">
         <h1 class="text-center">Submit Ticket</h1>
 
-        <form class="p-3" action="/tickets" method="POST">
+        <form class="p-3 validated-form" action="/tickets" method="POST" enctype="multipart/form-data" novalidate>
 
             <div class="mb-3">
                 <label for="originator" class="form-label">Originator:</label>
@@ -56,12 +56,13 @@
                 <div id="capturedSlotInput" class="col-sm-6 d-none">
                     <label class="form-label" for="capturedSlot">Captured Slot:</label>
                     <input type="number" class="form-control" id="capturedSlot" name="capturedSlot" max="350" min="0">
+                    <div id="slotInvalidFeedback" class="invalid-feedback"></div>
                 </div>
             </div>
 
             <div class="mb-3">
                 <label for="title" class="form-label">Title:</label>
-                <input type="text" class="form-control" id="title" name="title" required>
+                <input type="text" class="form-control" id="title" name="title" maxlength="80" required>
             </div>
 
             <div class="mb-3">
@@ -70,8 +71,8 @@
             </div>
 
             <div class="mb-3">
-                <label for="descriptionAttachment" class="form-label">Attatchment:</label>
-                <input type="file" class="form-control" name="descriptionAttachment" id="descriptionAttachment" accept="image/*,.pdf,.docx,.xlsx,.doc" multiple> 
+                <label for="descriptionFiles" class="form-label">Attatchment:</label>
+                <input type="file" class="form-control" name="descriptionFiles" id="descriptionFiles" accept="image/*,.pdf,.docx,.xlsx,.doc" multiple> 
             </div>
 
             <div class="mb-3">
@@ -110,38 +111,7 @@
         </form>
     </div>
 
-
-
-    <!-- Modal -->
-    <div class="modal fade" id="infoButton" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Priority Definitions</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="container-sm mt-4">
-                        <p>
-                            1: Critical to current training in development. Training cannot proceed without the problem being corrected. The initiator shall submit a condition report.
-                        </p>
-                        <p>
-                            2: Training can be performed but may require instructor work around. If the condition is adverse to quality of the training being performed, the initiator shall submit a condition report.
-                        </p>
-                        <p>
-                            3: Correct when work can be performed efficiently.
-                        </p>
-                        <p>
-                            4: Pending Reference Unit change or enhancement request.
-                        </p>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <%- include('../partials/modals/priorityDefinitions') %>
 
 
     <script src="/js/newPage.js"></script>

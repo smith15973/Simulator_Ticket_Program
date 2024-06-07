@@ -9,7 +9,8 @@ const ejsMate = require('ejs-mate');
 const session = require('express-session');
 const MongoStore = require("connect-mongo");
 const ticketRoutes = require('./routes/tickets');
-var favicon = require('serve-favicon');
+const favicon = require('serve-favicon');
+
 
 
 
@@ -22,7 +23,7 @@ db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
     console.log("Database connected");
 });
- 
+
 const app = express();
 
 app.engine('ejs', ejsMate);
@@ -70,11 +71,11 @@ app.all('*', (req, res, next) => {
 })
 
 
-app.use((err,req,res,next) => {
-    const {statusCode = 500} = err;
-    if (!err.essage) err.message = 'Oh No, Something Went Wrong!';
-    res.status(statusCode).render('tickets/notFound', {err});
-})
+// app.use((err,req,res,next) => {
+//     const {statusCode = 500} = err;
+//     if (!err.message) err.message = 'Oh No, Something Went Wrong!';
+//     res.status(statusCode).render('error', {err});
+// })
 
 /************LISTENER********************/
 const port = process.env.PORT || 3000;

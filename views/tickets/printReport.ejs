@@ -1,5 +1,118 @@
 <% layout("layouts/boilerplate") %>
 
+    <style>
+        #indexTable {
+            display: none;
+        }
+        @media print {
+            #indexTable {
+                display: block;
+            }
+            @page {
+                margin-left: 2%;
+                margin-right: 2%;
+            }
+
+            .col-print-half {
+                flex: 0 0 4.16667%;
+                max-width: 4.16667%;
+                font-size: xx-small;
+            }
+
+            .col-print-1 {
+                flex: 0 0 8.33333%;
+                max-width: 8.33333%;
+                font-size: xx-small;
+            }
+
+            .col-print-1half {
+                flex: 0 0 12.5%;
+                max-width: 12.5%;
+                font-size: xx-small;
+            }
+            .col-print-2 {
+                flex: 0 0 16.66667%;
+                max-width: 16.66667%;
+                font-size: xx-small;
+            }
+            .col-print-3 {
+                flex: 0 0 25%;
+                max-width: 25%;
+                font-size: xx-small;
+            }
+            .col-print-4 {
+                flex: 0 0 33.33333%;
+                max-width: 33.33333%;
+            }
+            .col-print-5 {
+                flex: 0 0 41.66667%;
+                max-width: 41.66667%;
+            }
+            .col-print-6 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+            .col-print-7 {
+                flex: 0 0 58.33333%;
+                max-width: 58.33333%;
+            }
+            .col-print-8 {
+                flex: 0 0 66.66667%;
+                max-width: 66.66667%;
+            }
+            .col-print-9 {
+                flex: 0 0 75%;
+                max-width: 75%;
+            }
+            .col-print-10 {
+                flex: 0 0 83.33333%;
+                max-width: 83.33333%;
+            }
+            .col-print-11 {
+                flex: 0 0 91.66667%;
+                max-width: 91.66667%;
+            }
+            .col-print-12 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
+
+
+    <div id="indexTable" >
+        <div class="row tableRows">
+            <% for (let ticket of tickets) { %>
+                <div class="col-print-1 border">
+                    <%= ticket.swrNum %>
+                </div>
+                <div class="col-print-1half border">
+                    <%= ticket.dateSubmitted.toISOString().substring(0,10) %>
+                </div>
+                <div class="col-print-2 border">
+                    <%= ticket.originator %>
+                </div>
+                <div class="col-print-3 border">
+                    <%= ticket.title %>
+                </div>
+                <div class="col-print-1 border">
+                    <%= ticket.system %>
+                </div>
+                <div class="col-print-half border">
+                    <%= ticket.priority %>
+                </div>
+                <div class="col-print-1half border">
+                    <%= ticket.status %>
+                </div>
+                <div class="col-print-1half border">
+                    <%= ticket.dateSubmitted.toISOString().substring(0,10) %>
+                </div>
+                <% } %>
+        </div>
+    </div>
+
+    <div style="page-break-after: always;"></div>
+
 
     <div class="container mt-5">
         <div class="row justify-content-between align-items-center">
@@ -8,7 +121,7 @@
                 <a id="backButton" class="btn btn-primary">Back</a>
             </div>
             <div class="col-auto">
-                <button class="btn btn-success" id="printButton">Print <img src="/images/svg/printer.svg" alt="trashcan"
+                <button class="btn btn-success" id="printButton">Print <img src="/images/svg/printer.svg" alt="printer"
                         height="25" width="20" /></button>
             </div>
         </div>
@@ -77,8 +190,8 @@
                             <div class="border border-dark border-2 p-2">
                                 Assigned To: <%= ticket.assignedTo %>
                             </div>
-                            <div class="border border-dark border-2 p-2 text-end">
-                                Captured: <%= ticket.captured %> Slot: <%= ticket.capturedSlot %>
+                            <div class="captured border border-dark border-2 p-2 text-end">
+                                <!-- Captured: <%= ticket.captured %> Slot: <%= ticket.capturedSlot %> -->
                             </div>
                         </div>
                     </div>
@@ -120,5 +233,5 @@
 
         <% } %>
 
-
+            <script>const tickets = JSON.parse('<%- JSON.stringify(tickets) %>');</script>
             <script src="/js/printReportPage.js"></script>

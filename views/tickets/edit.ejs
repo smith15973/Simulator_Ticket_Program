@@ -1,10 +1,10 @@
 <% layout('layouts/boilerplate') %>
     <div class="container mt-5">
-        
+
         <h1 class="text-center mb-4">Update Ticket <%= ticket.swrNum %>
         </h1>
 
-        <form class="p-3" action="/tickets/<%= ticket._id %>?_method=PUT" method="POST">
+        <form class="p-3 validated-form" action="/tickets/<%= ticket._id %>?_method=PUT" method="POST" novalidate>
             <div class="text-end">
                 <button class="btn btn-primary text-end" type="submit">Save</button>
             </div>
@@ -14,13 +14,15 @@
             </div>
 
             <div class="mb-3">
-                <label for="originator" class="form-label">Name</label>
-                <input type="text" list="originators" class="form-control" name="originator" id="originator"
+                <label for="originator" class="form-label">Originator</label>
+                <input placeholder="John Smith" type="text" list="originators" class="form-control" name="originator" id="originator"
                     value="<%= ticket.originator %>" required>
                 <datalist id="originators">
                     <% const names=new Set(); for (let ticket of tickets) { %>
                         <% if (!names.has(ticket.originator)) { names.add(ticket.originator); %>
-                            <option value="<%= ticket.originator %>"><%= ticket.originator %></option>
+                            <option value="<%= ticket.originator %>">
+                                <%= ticket.originator %>
+                            </option>
                             <% } %>
                                 <% } %>
                 </datalist>
@@ -55,16 +57,18 @@
                 </div>
 
                 <div id="capturedSlotInput"
-                    class="col-sm-6 <% if (ticket.captured === 'Not Captured') { %> d-none <% } %>">
+                    class="col-sm-6 d-none">
                     <label class="form-label" for="capturedSlot">Captured Slot:</label>
-                    <input max="350" min="0" type="number" class="form-control" id="capturedSlot" name="capturedSlot"
+                    <input min="1" type="number" class="form-control" id="capturedSlot" name="capturedSlot"
                         value="<%= ticket.capturedSlot %>">
+                        <div id="slotInvalidFeedback" class="invalid-feedback"></div>
                 </div>
             </div>
 
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="title" name="title" value="<%= ticket.title %>" required>
+                <input type="text" class="form-control" id="title" name="title" value="<%= ticket.title %>"
+                    maxlength="50" required>
             </div>
 
             <div class="mb-3">
@@ -83,8 +87,8 @@
 
             <div class="mb-3">
                 <label for="priority" class="form-label">
-                    Priority Level <span style=":hover {cursor: pointer;}" type="button" class="bold" data-bs-toggle="modal"
-                    data-bs-target="#infoButton">&#9432</span>
+                    Priority Level <span style=":hover {cursor: pointer;}" type="button" class="bold"
+                        data-bs-toggle="modal" data-bs-target="#infoButton">&#9432</span>
                 </label>
                 <select id="priority" name="priority" class="form-select">
                     <option value="1" <%=ticket.priority===1 ? 'selected' : '' %>>1</option>
@@ -109,7 +113,9 @@
                 <datalist id="assignees">
                     <% const assignees=new Set(); for (let ticket of tickets) { %>
                         <% if (!assignees.has(ticket.assignedTo)) { assignees.add(ticket.assignedTo); %>
-                            <option value="<%= ticket.assignedTo %>"><%= ticket.assignedTo %></option>
+                            <option value="<%= ticket.assignedTo %>">
+                                <%= ticket.assignedTo %>
+                            </option>
                             <% } %>
                                 <% } %>
                 </datalist>
@@ -126,7 +132,8 @@
                         <option value="Ready To Test" <%=ticket.status==='Ready To Test' ? 'selected' : '' %>>Ready To
                             Test</option>
                         <option value="Deferred" <%=ticket.status==='Deferred' ? 'selected' : '' %>>Deferred</option>
-                        <option id="closedStatus" value="Closed" <%=ticket.status==='Closed' ? 'selected' : '' %>>Closed</option>
+                        <option id="closedStatus" value="Closed" <%=ticket.status==='Closed' ? 'selected' : '' %>>Closed
+                        </option>
                     </select>
                 </div>
 
@@ -150,7 +157,9 @@
                 <datalist id="validators">
                     <% const validators=new Set(); for (let ticket of tickets) { %>
                         <% if (!validators.has(ticket.validatedBy)) { validators.add(ticket.validatedBy); %>
-                            <option value="<%= ticket.validatedBy %>"><%= ticket.validatedBy %></option>
+                            <option value="<%= ticket.validatedBy %>">
+                                <%= ticket.validatedBy %>
+                            </option>
                             <% } %>
                                 <% } %>
                 </datalist>
@@ -158,50 +167,21 @@
 
             <div class="mb-3">
                 <label for="dateClosed" class="form-label">Date Closed</label>
-                <input onchange="toggleClosedStatus()" max="<%= new Date().toISOString().split('T')[0] %>" type="date" class="form-control"
-                    name="dateClosed" id="dateClosed" <% if (ticket.dateClosed) { %> value="<%=
+                <input onchange="toggleClosedStatus()" max="<%= new Date().toISOString().split('T')[0] %>" type="date"
+                    class="form-control" name="dateClosed" id="dateClosed" <% if (ticket.dateClosed) { %> value="<%=
                     ticket.dateClosed.toISOString().substring(0,10) %>" <% } %>>
             </div>
 
             <div class="d-flex justify-content-between">
-                <form action="/tickets/<%= ticket._id %>">
-                    <button class="btn btn-light" type="submit">Cancel</button>
-                </form>
+
+                <a href="/tickets/<%= ticket._id %>" class="btn btn-light">Cancel</a>
+
                 <button class="btn btn-primary" type="submit">Save</button>
             </div>
         </form>
     </div>
 
-
-     <!-- Modal -->
-     <div class="modal fade" id="infoButton" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Priority Definitions</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="container-sm mt-4">
-                        <p>
-                            1: Critical to current training in development. Training cannot proceed without the problem being corrected. The initiator shall submit a condition report.
-                        </p>
-                        <p>
-                            2: Training can be performed but may require instructor work around. If the condition is adverse to quality of the training being performed, the initiator shall submit a condition report.
-                        </p>
-                        <p>
-                            3: Correct when work can be performed efficiently.
-                        </p>
-                        <p>
-                            4: Pending Reference Unit change or enhancement request.
-                        </p>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <%- include('../partials/modals/priorityDefinitions') %>
+    
 
     <script src="/js/editPage.js"></script>

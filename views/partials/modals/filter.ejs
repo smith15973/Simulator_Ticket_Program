@@ -1,0 +1,36 @@
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Filter Results</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <style>
+                    .form-label {
+                        font-weight: bold;
+                        font-size: 16px;
+                    }
+                </style>
+
+                <div class="container-sm mt-4">
+                    <div class="mb-1">
+                        <h1 class="text-center">Filter Results</h1>
+                        <div class="text-end">
+                            <button id="resetButton" class="btn btn-warning">Reset</button>
+                        </div>
+                    </div>
+
+                    <form id="formFilter" action="/tickets">
+                        <%- include('../filter') %>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button form="formFilter" type="submit" class="btn btn-primary">Save Filters</button>
+            </div>
+        </div>
+    </div>
+</div>

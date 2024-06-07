@@ -18,6 +18,7 @@
     "express": "^4.19.2",
     "method-override": "^3.0.0",
     "mongoose": "^8.4.0",
+    "multer": "^1.4.5-lts.1",
     "serve-favicon": "^2.5.0",
     "vivid-icons": "^1.0.10"
   }

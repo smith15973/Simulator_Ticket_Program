@@ -32,10 +32,10 @@ const TicketSchema = new Schema({
         type: Array,
         required: true
     },
-    descriptionAttachment: {
-        type: Array,
-        required: true
-    },
+    // descriptionFiles: {
+    //     type: Array,
+    //     required: true
+    // },
     impactedTraining: {
         type: String,
         required: true
@@ -64,10 +64,10 @@ const TicketSchema = new Schema({
     workPerformed: {
         type: Array,
     },
-    workPerformedAttachment: {
-        type: Array,
-        required: true
-    },
+    // workPerformedFiles: {
+    //     type: Array,
+    //     required: true
+    // },
     validatedBy: {
         type: String
     },

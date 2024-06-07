@@ -8,6 +8,22 @@ const searchQuery = require('../helperFunctions/globalSearch')
 
 const Ticket = require('../models/ticket');
 
+const path = require('path');
+const multer = require('multer');
+const storage = multer.diskStorage({
+    destination: (req,file,cb) => {
+        cb(null, './public/images/fileUploads/description')
+    },
+    filename: (req,file,cb) => {
+        console.log(file);
+        cb(null, Date.now() + path.extname(file.originalname))
+    }
+})
+
+const upload = multer({storage:storage});
+
+
+
 /************Generate Reports********************/
 
 //print filtered report
@@ -86,10 +102,15 @@ router.get('/new', async (req, res) => {
 })
 
 //post for a new ticket 
-router.post('/', async (req, res) => {
+router.post('/',(upload.array('descriptionFiles')), async (req, res) => {
+    res.send('It worked');
+    console.log(req.body, req.file);
     const ticket = await new Ticket(req.body);
     const tickets = await Ticket.find({});
     ticket.swrNum = MakeSWRNum(ticket, tickets);
+
+
+
     ticket.save();
     res.redirect(`/tickets/${ticket._id}`);
 })

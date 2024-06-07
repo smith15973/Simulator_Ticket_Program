@@ -3,16 +3,16 @@ const prioritys = document.querySelectorAll('.priority');
 for (priority of prioritys) {
     priority.style.fontWeight = 'bold';
     if (priority.innerText === "1") {
-        priority.style.color = 'red';
+        priority.style.color = '#FF0000';
     }
     if (priority.innerText === "2") {
-        priority.style.color = 'darkorange';
+        priority.style.color = '#FFA500';
     }
     if (priority.innerText === "3") {
         priority.style.color = '#9B870C';
     }
     if (priority.innerText === "4") {
-        priority.style.color = 'black';
+        priority.style.color = '#1E90FF';
     }
 }
 

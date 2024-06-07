@@ -1,21 +1,18 @@
 <% layout('layouts/boilerplate') %>
 
     <div class="container mt-5">
-        <h1 class="text-center mb-4">Ticket <%= ticket.swrNum %></h1>
+        <h1 class="text-center mb-4">Ticket <%= ticket.swrNum %>
+        </h1>
 
         <div class="d-flex justify-content-between mb-4">
             <form action="/tickets/<%=ticket._id%>/edit" class="me-2">
                 <button class="btn btn-primary">Edit</button>
             </form>
 
-            <form action="/tickets/<%=ticket._id%>?_method=DELETE" method="POST" class="ms-2">
-                <button class="btn btn-danger">Delete <img
-                    src="/images/svg/trash.svg"
-                    alt="trashcan"
-                    height="25"
-                    width="20" />
-                     </button>
-                <!-- <i data-vi="trash" data-vi-size="25"></i> -->
+            <form action="/tickets/<%=ticket._id%>?_method=DELETE" method="POST" class="ms-2" id="deleteForm">
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete
+                    <img src="/images/svg/trash.svg" alt="trashcan" height="25" width="20" />
+                </button>
             </form>
         </div>
 
@@ -39,9 +36,8 @@
                 </div>
             </div>
             <div class="col-md-6 mb-3">
-                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
-                    <strong>Problem Captured:</strong>
-                    <%= ticket.captured %> Slot: <%= ticket.capturedSlot %>
+                <div id="captured" class="border border-dark border-2 p-2 overflow-wrap-break-word">
+
                 </div>
             </div>
             <div class="col-md-6 mb-3">
@@ -113,16 +109,17 @@
             </div>
         </div>
         <div class="text-end">
-            <button class="btn btn-success" id="print_external">Print Report <img
-                src="/images/svg/printer.svg"
-                alt="trashcan"
-                height="25"
-                width="20" /></button>
+            <button class="btn btn-success" id="print_external">Print Report <img src="/images/svg/printer.svg"
+                    alt="trashcan" height="25" width="20" /></button>
         </div>
-        
+
     </div>
 
-    <div class="ticketID" hidden><%= ticket._id %></div>
+    <div class="ticketID" hidden>
+        <%= ticket._id %>
+    </div>
 
+    <%- include('../partials/modals/confirmDelete') %>
 
-    <script src="/js/showPage.js"></script>
+        <script>const ticket = JSON.parse('<%- JSON.stringify(ticket) %>');</script>
+        <script src="/js/showPage.js"></script>
