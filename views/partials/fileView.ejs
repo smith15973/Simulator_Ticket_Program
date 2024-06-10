@@ -1,0 +1,93 @@
+<div class="row text-center justify-content-around mb-5">
+    <div class="col-4">
+        <button id="pictureButton" type="button"
+            class="btn btn-secondary disabled">Images</button>
+    </div>
+    <div class="col-4">
+        <button id="pdfButton" type="button" class="btn btn-primary">PDFs</button>
+    </div>
+    <div class="col-4">
+        <button id="docxButton" type="button"
+            class="btn btn-primary">Docs/Spreadsheets</button>
+    </div>
+</div>
+
+<%  const imageArray=new Array();
+    const pdfArray=new Array();
+    const docsArray=new Array();
+    for (let file of ticket.descriptionFiles) {
+        if (file.url.includes('.pdf')) {
+            pdfArray.push(file);
+        } else if (file.url.includes('.jpg') || file.url.includes('.jpeg') || file.url.includes('.png')) {
+            imageArray.push(file);
+        } else if (file.url.includes('.doc') || file.url.includes('.docx') || file.url.includes('.xls') || file.url.includes('.xlsx')) { 
+            docsArray.push(file);
+        } } %>
+
+
+    <div class="col-8 offset-2 mb-3">
+        <div id="imageSection">
+            <% if (imageArray.length> 0) { %>
+                <div id="carouselPictures" class="carousel slide">
+                    <div class="carousel-inner">
+                        <% imageArray.forEach((img,i)=> { %>
+                            <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+                                <img src="<%= img.url %>" class="d-block w-100 border border-dark border-5 rounded" alt="">
+                            </div>
+                            <% });%>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselPictures"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselPictures"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+                <% } else {%>
+                    <h2 class="text-center">Sorry no Images!</h2>
+                    <% } %>
+        </div>
+
+
+
+
+        <div id="pdfSection" class="d-none">
+            <% if (pdfArray.length> 0) { %>
+                <div>
+                    <select id="pdfTable" class="form-select mb-3">
+                        <% pdfArray.forEach((pdf,i) => { %>
+                          <option value="<%= i %>"> <%= pdf.originalName %> </option>
+                     <% }) %>
+                    </select>
+                    <% pdfArray.forEach((pdf,i) => { %>
+                        <embed id="pdfWindow<%=i%>" class="rounded d-none" src="<%=pdfArray[i].url%>" width="800px" height="1000px" />
+                    <% }) %>
+                </div>
+               
+            
+            <% } else { %>
+                <h2 class="text-center">Sorry no PDFs!</h2>
+                <% } %>
+        </div>
+        
+        
+        
+        <div id="docsSection" class="d-none">
+            
+            <% if (docsArray.length> 0) { %>
+                <div class="list-group">
+                    <% docsArray.forEach((doc,i) => { %>
+                        <a href="<%= doc.url %>" class="list-group-item list-group-item-action"> <%= doc.originalName %> </a>
+                    <% }) %>
+                </div>
+            <% } else {%>
+                <h2 class="text-center">Sorry no other Documents!</h2>
+                <% } %>
+        </div>
+    </div>
+
+    <script src="/js/fileViewToggle.js"></script>

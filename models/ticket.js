@@ -12,7 +12,7 @@ const TicketSchema = new Schema({
     },
     originator: {
         type: String,
-        required: true 
+        required: true
     },
     captured: {
         type: String,
@@ -32,10 +32,13 @@ const TicketSchema = new Schema({
         type: Array,
         required: true
     },
-    // descriptionFiles: {
-    //     type: Array,
-    //     required: true
-    // },
+    descriptionFiles: [
+        {
+            url: String,
+            fileName: String,
+            originalName: String,
+        }
+    ],
     impactedTraining: {
         type: String,
         required: true

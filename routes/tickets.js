@@ -15,12 +15,11 @@ const storage = multer.diskStorage({
         cb(null, './public/images/fileUploads/description')
     },
     filename: (req, file, cb) => {
-        console.log(file);
         cb(null, Date.now() + path.extname(file.originalname))
     }
 })
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
 
 
@@ -106,9 +105,8 @@ router.post('/', (upload.array('descriptionFiles')), async (req, res) => {
     const ticket = await new Ticket(req.body);
     const tickets = await Ticket.find({});
     ticket.swrNum = MakeSWRNum(ticket, tickets);
-
-
-
+    ticket.descriptionFiles = req.files.map(f => ({ url: f.path.slice(6), fileName: f.filename, originalName: f.originalname}));
+    console.log(req.files);
     ticket.save();
     res.redirect(`/tickets/${ticket._id}`);
 })
@@ -148,6 +146,7 @@ router.get('/:id', async (req, res) => {
         res.render('tickets/notFound')
     }
 })
+
 
 
 

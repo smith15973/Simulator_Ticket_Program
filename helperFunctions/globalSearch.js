@@ -5,7 +5,7 @@ function searchQuery(search) {
         query.push({ priority: Number(parseInt(search)) });
     }
 
-    query.push({ systems: { $regex: search, $options: 'i' } });
+    query.push({ system: { $regex: search, $options: 'i' } });
     query.push({ impactedTraining: { $regex: search, $options: 'i' } });
     query.push({ captured: { $regex: search, $options: 'i' } });
     query.push({ status: { $regex: search, $options: 'i' } });
