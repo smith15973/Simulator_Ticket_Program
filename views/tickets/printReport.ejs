@@ -83,28 +83,28 @@
     <div id="indexTable" >
         <div class="row tableRows">
             <% for (let ticket of tickets) { %>
-                <div class="col-print-1 border">
+                <div class="col-print-1 border text-break">
                     <%= ticket.swrNum %>
                 </div>
-                <div class="col-print-1half border">
+                <div class="col-print-1half border text-break">
                     <%= ticket.dateSubmitted.toISOString().substring(0,10) %>
                 </div>
-                <div class="col-print-2 border">
+                <div class="col-print-2 border text-break">
                     <%= ticket.originator %>
                 </div>
-                <div class="col-print-3 border">
+                <div class="col-print-3 border text-break">
                     <%= ticket.title %>
                 </div>
-                <div class="col-print-1 border">
+                <div class="col-print-1 border text-break">
                     <%= ticket.system %>
                 </div>
-                <div class="col-print-half border">
+                <div class="col-print-half border text-break">
                     <%= ticket.priority %>
                 </div>
-                <div class="col-print-1half border">
+                <div class="col-print-1half border text-break">
                     <%= ticket.status %>
                 </div>
-                <div class="col-print-1half border">
+                <div class="col-print-1half border text-break">
                     <%= ticket.dateSubmitted.toISOString().substring(0,10) %>
                 </div>
                 <% } %>
