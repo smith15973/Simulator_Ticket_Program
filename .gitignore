@@ -3,5 +3,15 @@
 node_modules/.DS_Store
 node_modules/cssstyle/.DS_Store
 
-.env
+*.env
 node_modules/.DS_Store
+*.pdf
+*.jpeg
+*.jpg
+*.png
+*.gif
+*.docx
+*.doc
+*.xls
+*.xlsx
+

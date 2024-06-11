@@ -8,6 +8,7 @@ const searchQuery = require('../helperFunctions/globalSearch')
 
 const Ticket = require('../models/ticket');
 
+const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const storage = multer.diskStorage({
@@ -107,7 +108,6 @@ router.post('/', (upload.array('attachments')), async (req, res) => {
     const tickets = await Ticket.find({});
     ticket.swrNum = MakeSWRNum(ticket, tickets);
     ticket.attachments = req.files.map(f => ({ url: f.path.slice(6), fileName: f.filename, originalName: f.originalname }));
-    console.log(req.files);
     ticket.save();
     res.redirect(`/tickets/${ticket._id}`);
 })
@@ -129,6 +129,17 @@ router.put('/:id', (upload.array('attachments')), async (req, res) => {
     const files = req.files.map(f => ({ url: f.path.slice(6), fileName: f.filename, originalName: f.originalname }));
     ticket.attachments.push(...files);
     await ticket.save();
+
+    if (req.body.deleteFiles) {
+        for (let deletedFile of req.body.deleteFiles) {
+            const file = ticket.attachments.find(f => f.fileName === deletedFile);
+            console.log(file);
+            console.log(file.fileName);
+            fs.unlinkSync(`public/images/fileUploads/${file.fileName}`);
+        }
+        await ticket.updateOne({ $pull: { attachments: { fileName: { $in: req.body.deleteFiles } } } });
+    }
+
     res.redirect(`/tickets/${ticket._id}`);
 });
 
@@ -136,7 +147,10 @@ router.put('/:id', (upload.array('attachments')), async (req, res) => {
 //delete specific ticket by id
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
-    await Ticket.findByIdAndDelete(id);
+    const ticket = await Ticket.findByIdAndDelete(id);
+    for (let file of ticket.attachments) {
+        fs.unlinkSync(`public/images/fileUploads/${file.fileName}`);
+    }
     res.redirect('/tickets');
 });
 
