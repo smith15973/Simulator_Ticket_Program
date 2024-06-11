@@ -30,8 +30,13 @@ const upload = multer({ storage });
 //print filtered report
 router.get('/report/print', async (req, res) => {
     query = filterQuery(req);
-    const tickets = await Ticket.find(query);
-    res.render('tickets/printReport', { tickets });
+    const tickets = await Ticket.find(query)
+        .sort({ swrNum: -1 });
+    let includeIndex = 'No';
+    if (req.query.includeIndex === 'Yes') {
+        includeIndex = 'Yes';
+    }
+    res.render('tickets/printReport', { tickets, includeIndex });
 })
 
 
@@ -43,8 +48,8 @@ router.get('/generate', async (req, res) => {
 //print one report
 router.get('/:id/print', async (req, res) => {
     const { id } = req.params;
-    const tickets = await Ticket.find({ _id: id });
-    res.render('tickets/printReport', { tickets });
+    const tickets = await Ticket.find({ _id: id })
+    res.render('tickets/printReport', { tickets, includeIndex: 'No' });
 })
 
 
@@ -162,7 +167,7 @@ router.get('/:id', async (req, res) => {
         const ticket = await Ticket.findById(id)
         res.render(`tickets/show`, { ticket })
     } catch (e) {
-        res.render('tickets/notFound')
+        res.render('tickets/error')
     }
 })
 

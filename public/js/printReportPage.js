@@ -12,10 +12,10 @@ const captured = document.querySelectorAll('.captured')
 for (let i = 0; i < tickets.length; i++) {
     
     if (tickets[i].captured === 'Snapped') {
-        captured[i].innerHTML = `Snapped to Slot ${tickets[i].capturedSlot}`;
+        captured[i].innerHTML = `<strong>Snapped to Slot</strong> ${tickets[i].capturedSlot}`;
     } else if (tickets[i].captured === 'SavedIC#') {
-        captured[i].innerHTML = `Saved IC# in Slot${tickets[i].capturedSlot}`;
+        captured[i].innerHTML = `<strong>Saved IC# in Slot</strong> ${tickets[i].capturedSlot}`;
     } else {
-        captured[i].innerHTML = 'Not Captured'
+        captured[i].innerHTML = '<strong>Not Captured</strong>'
     }
 }

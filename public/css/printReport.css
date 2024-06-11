@@ -1,0 +1,86 @@
+#indexTable {
+    display: none;
+}
+@media print {
+    #indexTable {
+        display: block;
+        page-break-after: always;
+    }
+    .container.mt-5 {
+        display: none;
+    }
+    .container {
+        max-width: 90%; /* Adjust as necessary */
+        margin: 0 auto; /* Centers the container */
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+    @page {
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+
+    .col-print-half {
+        flex: 0 0 4.16667%;
+        max-width: 4.16667%;
+        font-size: xx-small;
+    }
+
+    .col-print-1 {
+        flex: 0 0 8.33333%;
+        max-width: 8.33333%;
+        font-size: xx-small;
+    }
+
+    .col-print-1half {
+        flex: 0 0 12.5%;
+        max-width: 12.5%;
+        font-size: xx-small;
+    }
+    .col-print-2 {
+        flex: 0 0 16.66667%;
+        max-width: 16.66667%;
+        font-size: xx-small;
+    }
+    .col-print-3 {
+        flex: 0 0 25%;
+        max-width: 25%;
+        font-size: xx-small;
+    }
+    .col-print-4 {
+        flex: 0 0 33.33333%;
+        max-width: 33.33333%;
+    }
+    .col-print-5 {
+        flex: 0 0 41.66667%;
+        max-width: 41.66667%;
+    }
+    .col-print-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    .col-print-7 {
+        flex: 0 0 58.33333%;
+        max-width: 58.33333%;
+    }
+    .col-print-8 {
+        flex: 0 0 66.66667%;
+        max-width: 66.66667%;
+    }
+    .col-print-9 {
+        flex: 0 0 75%;
+        max-width: 75%;
+    }
+    .col-print-10 {
+        flex: 0 0 83.33333%;
+        max-width: 83.33333%;
+    }
+    .col-print-11 {
+        flex: 0 0 91.66667%;
+        max-width: 91.66667%;
+    }
+    .col-print-12 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}

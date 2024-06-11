@@ -18,6 +18,8 @@ for (priority of prioritys) {
 
 const statuses = document.querySelectorAll('.status');
 
+document.querySelector('#indexSection').classList.add('d-none');
+
 for (statuss of statuses) {
     if (statuss.innerText === "Unassigned") {
         statuss.style.color = 'red';

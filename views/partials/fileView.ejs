@@ -77,11 +77,10 @@
         
         
         <div id="docsSection" class="d-none">
-            
             <% if (docsArray.length> 0) { %>
                 <div class="list-group">
                     <% docsArray.forEach((doc,i) => { %>
-                        <a href="<%= doc.url %>" class="list-group-item list-group-item-action"> <%= doc.originalName %> </a>
+                        <a download="<%=doc.originalName  %>" href="<%= doc.url %>" class="list-group-item list-group-item-action"> <%= doc.originalName %> </a>
                     <% }) %>
                 </div>
             <% } else {%>
