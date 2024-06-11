@@ -15,6 +15,7 @@ const favicon = require('serve-favicon');
 
 
 
+
 const dbURL = 'mongodb://localhost:27017/simTicketSystem'
 mongoose.connect(dbURL);
 
@@ -34,6 +35,8 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'ticketFavicon.png')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+
+
 
 
 

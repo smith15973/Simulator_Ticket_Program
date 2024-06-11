@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 const TicketSchema = new Schema({
     swrNum: {
         type: String,
-
     },
     dateSubmitted: {
         type: Date,

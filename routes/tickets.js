@@ -23,6 +23,18 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 
+const { ticketSchema } = require('../schemas.js');
+const validateTicket = (req, res, next) => {
+    const { error } = ticketSchema.validate(req.body);
+    if (error) {
+        const msg = err.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400);
+    } else {
+        next();
+    }
+}
+
+
 
 
 /************Generate Reports********************/
