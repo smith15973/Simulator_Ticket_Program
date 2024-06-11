@@ -4,7 +4,7 @@
         <h1 class="text-center mb-4">Update Ticket <%= ticket.swrNum %>
         </h1>
 
-        <form class="p-3 validated-form" action="/tickets/<%= ticket._id %>?_method=PUT" method="POST" novalidate>
+        <form class="p-3 validated-form" action="/tickets/<%= ticket._id %>?_method=PUT" method="POST" enctype="multipart/form-data" novalidate>
             <div class="text-end">
                 <button class="btn btn-primary text-end" type="submit">Save</button>
             </div>
@@ -75,6 +75,11 @@
                 <label for="description" class="form-label">Description</label>
                 <textarea class="form-control" id="description" name="description"
                     rows="3"><%= ticket.description %></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="attachments" class="form-label">Attachments:</label>
+                <input type="file" class="form-control" name="attachments" id="attachments" accept="image/*,.pdf,.docx,.xlsx,.xls,.doc" multiple> 
             </div>
 
             <div class="mb-3">

@@ -25,8 +25,10 @@ picButton.addEventListener('click', () => {
 
 pdfButton.addEventListener('click', () => {
 
-    document.querySelector(`#pdfWindow0`).classList.remove('d-none');
-    document.querySelector('#pdfTable').value = 0;
+    if (document.querySelector(`#pdfWindow0`)) {
+        document.querySelector(`#pdfWindow0`).classList.remove('d-none');
+        document.querySelector('#pdfTable').value = 0;
+    }
 
     pdfs.classList.remove('d-none');
     pictures.classList.add('d-none');
@@ -66,12 +68,15 @@ docxButton.addEventListener('click', () => {
 
 const pdfOption = document.querySelector('#pdfTable');
 const pdfWindow = document.querySelector('pdfWindow');
-pdfOption.addEventListener('change', () => {
-    const choice = pdfOption.value;
-    for (let i = 0; i < document.querySelectorAll('embed').length; ++i) {
-        document.querySelector(`#pdfWindow${i}`).classList.add('d-none');
-    }
-    document.querySelector(`#pdfWindow${choice}`).classList.remove('d-none');
+if (pdfOption) {
+    pdfOption.addEventListener('change', () => {
+        const choice = pdfOption.value;
+        for (let i = 0; i < document.querySelectorAll('embed').length; ++i) {
+            document.querySelector(`#pdfWindow${i}`).classList.add('d-none');
+        }
+        document.querySelector(`#pdfWindow${choice}`).classList.remove('d-none');
 
-})
+    })
+}
+
 

@@ -32,7 +32,7 @@ const TicketSchema = new Schema({
         type: Array,
         required: true
     },
-    descriptionFiles: [
+    attachments: [
         {
             url: String,
             fileName: String,
@@ -67,10 +67,6 @@ const TicketSchema = new Schema({
     workPerformed: {
         type: Array,
     },
-    // workPerformedFiles: {
-    //     type: Array,
-    //     required: true
-    // },
     validatedBy: {
         type: String
     },

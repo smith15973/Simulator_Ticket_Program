@@ -15,7 +15,7 @@
 <%  const imageArray=new Array();
     const pdfArray=new Array();
     const docsArray=new Array();
-    for (let file of ticket.descriptionFiles) {
+    for (let file of ticket.attachments) {
         if (file.url.includes('.pdf')) {
             pdfArray.push(file);
         } else if (file.url.includes('.jpg') || file.url.includes('.jpeg') || file.url.includes('.png')) {
@@ -36,6 +36,7 @@
                             </div>
                             <% });%>
                     </div>
+                    <% if (imageArray.length > 1) { %>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselPictures"
                         data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -46,6 +47,7 @@
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
                     </button>
+                    <% } %>
                 </div>
                 <% } else {%>
                     <h2 class="text-center">Sorry no Images!</h2>
@@ -67,8 +69,6 @@
                         <embed id="pdfWindow<%=i%>" class="rounded d-none" src="<%=pdfArray[i].url%>" width="800px" height="1000px" />
                     <% }) %>
                 </div>
-               
-            
             <% } else { %>
                 <h2 class="text-center">Sorry no PDFs!</h2>
                 <% } %>

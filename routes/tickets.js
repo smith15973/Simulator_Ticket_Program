@@ -12,7 +12,7 @@ const path = require('path');
 const multer = require('multer');
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './public/images/fileUploads/description')
+        cb(null, './public/images/fileUploads')
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + path.extname(file.originalname))
@@ -20,6 +20,7 @@ const storage = multer.diskStorage({
 })
 
 const upload = multer({ storage });
+
 
 
 
@@ -101,11 +102,11 @@ router.get('/new', async (req, res) => {
 })
 
 //post for a new ticket 
-router.post('/', (upload.array('descriptionFiles')), async (req, res) => {
+router.post('/', (upload.array('attachments')), async (req, res) => {
     const ticket = await new Ticket(req.body);
     const tickets = await Ticket.find({});
     ticket.swrNum = MakeSWRNum(ticket, tickets);
-    ticket.descriptionFiles = req.files.map(f => ({ url: f.path.slice(6), fileName: f.filename, originalName: f.originalname}));
+    ticket.attachments = req.files.map(f => ({ url: f.path.slice(6), fileName: f.filename, originalName: f.originalname }));
     console.log(req.files);
     ticket.save();
     res.redirect(`/tickets/${ticket._id}`);
@@ -122,9 +123,12 @@ router.get('/:id/edit', async (req, res) => {
 })
 
 // PUT edit specific ticket by id
-router.put('/:id', async (req, res) => {
+router.put('/:id', (upload.array('attachments')), async (req, res) => {
     const { id } = req.params;
     const ticket = await Ticket.findByIdAndUpdate(id, req.body, { runValidators: true, new: true });
+    const files = req.files.map(f => ({ url: f.path.slice(6), fileName: f.filename, originalName: f.originalname }));
+    ticket.attachments.push(...files);
+    await ticket.save();
     res.redirect(`/tickets/${ticket._id}`);
 });
 
@@ -146,8 +150,5 @@ router.get('/:id', async (req, res) => {
         res.render('tickets/notFound')
     }
 })
-
-
-
 
 module.exports = router;
