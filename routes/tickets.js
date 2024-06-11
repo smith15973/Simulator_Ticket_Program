@@ -9,7 +9,7 @@ const searchQuery = require('../helperFunctions/globalSearch')
 const Ticket = require('../models/ticket');
 
 // type absolute path to where you want to store uploaded attachments
-const absoluteAttachmentsPath = '/Users/noah/Desktop/Davis_Besse/simAttachments';
+const absoluteAttachmentsPath = '/Users/noah/Desktop/Davis_Besse/Simulator_Ticket_Program/attachments';
 
 const fs = require('fs');
 const path = require('path');

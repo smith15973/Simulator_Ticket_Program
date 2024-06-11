@@ -73,8 +73,10 @@
     
     <% for (let ticket of tickets) { %>
     <div class="container">
-            <h1 class="text-center mb-3">
-                SWR <%= ticket.swrNum %>
+            <h1  class="text-center mb-3">
+                <a class="text-dark" href="/tickets/<%=ticket._id%>">
+                    SWR <%= ticket.swrNum %>
+                </a>
             </h1>
             <hr>
             <!-- date -->
