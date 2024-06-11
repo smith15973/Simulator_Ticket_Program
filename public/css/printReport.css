@@ -1,7 +1,10 @@
-#indexTable {
+#indexTable,h3 {
     display: none;
 }
 @media print {
+    h3 {
+        display: block;
+    }
     #indexTable {
         display: block;
         page-break-after: always;

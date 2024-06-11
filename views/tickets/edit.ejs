@@ -158,7 +158,7 @@
                     <% ticket.attachments.forEach((attach, i) => { %>
                         <div class="list-group-item list-group-item">
                             <% if (attach.url.includes('.jpg') || attach.url.includes('.jpeg') || attach.url.includes('.png')) { %>
-                                <img id="image-<%= i %>" class="thumbnails" src="<%= attach.url %>">
+                                <img id="image-<%= i %>" class="thumbnails" src="/attachments<%= attach.url %>">
                             <% } %>
                             <div class="d-inline justify-right">
                                 <label for="attach-<%= i %>"><%= attach.originalName %></label>

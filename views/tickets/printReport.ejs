@@ -14,33 +14,56 @@
         </div>
     </div>
 
-    <% if (includeIndex === 'Yes') { %> 
+    <% if (includeIndex === 'Yes') { %>
+        <h3 class="text-center">SWR Index</h3> 
         <div id="indexTable">
+            <div class="row">
+                <div class="col-print-1half border border-2 text-break text-center fw-bold">
+                    SWR
+                </div>
+                <div class="col-print-1half border border-2 text-break text-center fw-bold">
+                    Submitted
+                </div>
+                <div class="col-print-2 border border-2 text-break text-center fw-bold">
+                    Originator
+                </div>
+                <div class="col-print-3 border border-2 text-break text-center fw-bold">
+                    Title
+                </div>
+                <div class="col-print-1 border border-2 text-break text-center fw-bold">
+                    Priority
+                </div>
+                <div class="col-print-1half border border-2 text-break text-center fw-bold">
+                    Status
+                </div>
+                <div class="col-print-1half border border-2 text-break text-center fw-bold">
+                    Closed
+                </div>
+            </div>
             <div class="row tableRows">
                 <% for (let ticket of tickets) { %>
-                    <div class="col-print-1 border text-break">
+                    <div class="col-print-1half border text-break text-center">
                         <%= ticket.swrNum %>
                     </div>
-                    <div class="col-print-1half border text-break">
+                    <div class="col-print-1half border text-break text-center">
                         <%= ticket.dateSubmitted.toISOString().substring(0,10) %>
                     </div>
-                    <div class="col-print-2 border text-break">
+                    <div class="col-print-2 border text-break text-center">
                         <%= ticket.originator %>
                     </div>
-                    <div class="col-print-3 border text-break">
+                    <div class="col-print-3 border text-break text-center">
                         <%= ticket.title %>
                     </div>
-                    <div class="col-print-1 border text-break">
-                        <%= ticket.system %>
-                    </div>
-                    <div class="col-print-half border text-break">
+                    <div class="col-print-1 border text-break text-center">
                         <%= ticket.priority %>
                     </div>
-                    <div class="col-print-1half border text-break">
+                    <div class="col-print-1half border text-break text-center">
                         <%= ticket.status %>
                     </div>
-                    <div class="col-print-1half border text-break">
-                        <%= ticket.dateSubmitted.toISOString().substring(0,10) %>
+                    <div class="col-print-1half border text-break text-center">
+                        <% if (ticket.dateClosed) { %>
+                        <%= ticket.dateClosed.toISOString().substring(0,10) %>
+                        <% } %>
                     </div>
                     <% } %>
             </div>
@@ -127,7 +150,7 @@
                 <strong>Attachments:</strong>
                 <div>
                     <% for (let attachment of ticket.attachments) { %>
-                        <a download="<%=attachment.originalName%>" href="<%= attachment.url %>" target="_blank">
+                        <a download="<%=attachment.originalName%>" href="/attachments<%= attachment.url %>" target="_blank">
                             <%= attachment.originalName %>
                         </a>
                         <br>

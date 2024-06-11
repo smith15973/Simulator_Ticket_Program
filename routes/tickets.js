@@ -8,31 +8,34 @@ const searchQuery = require('../helperFunctions/globalSearch')
 
 const Ticket = require('../models/ticket');
 
+// type absolute path to where you want to store uploaded attachments
+const absoluteAttachmentsPath = '/Users/noah/Desktop/Davis_Besse/simAttachments';
+
 const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './public/images/fileUploads')
+        cb(null, absoluteAttachmentsPath)
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname))
+        cb(null, Date.now() + Math.floor((Math.random()*1000)) + path.extname(file.originalname))
     }
 })
 
 const upload = multer({ storage });
 
 
-const { ticketSchema } = require('../schemas.js');
-const validateTicket = (req, res, next) => {
-    const { error } = ticketSchema.validate(req.body);
-    if (error) {
-        const msg = err.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400);
-    } else {
-        next();
-    }
-}
+// const { ticketSchema } = require('../schemas.js');
+// const validateTicket = (req, res, next) => {
+//     const { error } = ticketSchema.validate(req.body);
+//     if (error) {
+//         const msg = err.details.map(el => el.message).join(',')
+//         throw new ExpressError(msg, 400);
+//     } else {
+//         next();
+//     }
+// }
 
 
 
@@ -124,7 +127,7 @@ router.post('/', (upload.array('attachments')), async (req, res) => {
     const ticket = await new Ticket(req.body);
     const tickets = await Ticket.find({});
     ticket.swrNum = MakeSWRNum(ticket, tickets);
-    ticket.attachments = req.files.map(f => ({ url: f.path.slice(6), fileName: f.filename, originalName: f.originalname }));
+    ticket.attachments = req.files.map(f => ({ url: f.path, fileName: f.filename, originalName: f.originalname }));
     ticket.save();
     res.redirect(`/tickets/${ticket._id}`);
 })
@@ -143,7 +146,7 @@ router.get('/:id/edit', async (req, res) => {
 router.put('/:id', (upload.array('attachments')), async (req, res) => {
     const { id } = req.params;
     const ticket = await Ticket.findByIdAndUpdate(id, req.body, { runValidators: true, new: true });
-    const files = req.files.map(f => ({ url: f.path.slice(6), fileName: f.filename, originalName: f.originalname }));
+    const files = req.files.map(f => ({ url: f.path, fileName: f.filename, originalName: f.originalname }));
     ticket.attachments.push(...files);
     await ticket.save();
 
@@ -152,7 +155,7 @@ router.put('/:id', (upload.array('attachments')), async (req, res) => {
             const file = ticket.attachments.find(f => f.fileName === deletedFile);
             console.log(file);
             console.log(file.fileName);
-            fs.unlinkSync(`public/images/fileUploads/${file.fileName}`);
+            fs.unlinkSync(`${absoluteAttachmentsPath}/${file.fileName}`);
         }
         await ticket.updateOne({ $pull: { attachments: { fileName: { $in: req.body.deleteFiles } } } });
     }
@@ -167,7 +170,7 @@ router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     const ticket = await Ticket.findByIdAndDelete(id);
     for (let file of ticket.attachments) {
-        fs.unlinkSync(`public/images/fileUploads/${file.fileName}`);
+        fs.unlinkSync(`${absoluteAttachmentsPath}/${file.fileName}`);
     }
     res.redirect('/tickets');
 });
