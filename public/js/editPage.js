@@ -12,17 +12,39 @@
 //     }
 // }
 
-// Initialize the companyIDField display based on the current status
+const dateSubmittedObject = document.querySelector('#dateSubmitted');
+const dateClosedObject = document.querySelector('#dateClosed');
 document.addEventListener('DOMContentLoaded', function () {
-    // toggleCompanyID();
+    if (dateSubmittedObject.value !== '') {
+        dateClosedObject.setAttribute('min', dateSubmittedObject.value);
+    } else {
+        dateClosedObject.setAttribute('disabled', true);
+    }
 });
 
-const dateClosedObject = document.querySelector('#dateClosed');
-function toggleClosedStatus() {
-if (dateClosedObject.value !== '') {
-    document.querySelector('#closedStatus').setAttribute('selected',true)
-}
-}
+dateSubmittedObject.addEventListener('change', function () {
+    if (dateSubmittedObject.value !== '') {
+        dateClosedObject.setAttribute('min', dateSubmittedObject.value);
+        dateClosedObject.removeAttribute('disabled', true);
+    } else {
+        dateClosedObject.setAttribute('disabled', true);
+    }
+});
+
+dateClosedObject.addEventListener('change', function () {
+    if (dateClosedObject.value !== '') {
+        document.querySelector('#status').value = 'Closed';
+    }
+});
+
+const statusChoice = document.querySelector('#status');
+statusChoice.addEventListener('change', function () {
+    if (statusChoice.value === 'Closed') {
+        dateClosedObject.value = new Date().toISOString().split('T')[0];
+    } else {
+        dateClosedObject.value = '';
+    }
+});
 
 
 // Captured Slot Toggle

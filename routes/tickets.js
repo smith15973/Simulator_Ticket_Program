@@ -139,6 +139,7 @@ router.put('/:id', (upload.array('attachments')), async (req, res) => {
         }
         await ticket.updateOne({ $pull: { attachments: { fileName: { $in: req.body.deleteFiles } } } });
     }
+    console.log(req.body);
 
     res.redirect(`/tickets/${ticket._id}`);
 });
