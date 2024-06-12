@@ -1,16 +1,61 @@
-// // defferedID Toggle
-// function toggleCompanyID() {
-//     const statusChoices = document.getElementById('statusChoices');
-//     var status = document.getElementById('status').value;
-//     var companyIDField = document.getElementById('companyIDField');
-//     if (status === 'Deferred') {
-//         companyIDField.style.display = 'block';
-//         statusChoices.classList.add('col-sm-6')
-//     } else {
-//         companyIDField.style.display = 'none';
-//         statusChoices.classList.remove('col-sm-6')
-//     }
-// }
+//const { date } = require("joi");
+
+//const { required } = require("joi");
+
+
+verifyStatusParams = function() {
+    if (statusChoice.value == 'Unassigned') {
+        dateClosedObject.removeAttribute('required', true);
+        validatedBy.removeAttribute('required', true);
+        assignedTo.removeAttribute('required', true);
+        workPerformed.removeAttribute('required', true);
+
+        dateClosedObject.setAttribute('disabled', true);
+        validatedBy.setAttribute('disabled', true);
+        assignedTo.setAttribute('disabled', true);
+        workPerformed.setAttribute('disabled', true);
+
+        coryID.removeAttribute('required', true);
+        coryID.setAttribute('disabled', true);
+    }
+
+    else if (statusChoice.value === 'In Progress' || statusChoice.value === 'Ready To Test' || statusChoice.value === 'Deferred') {
+        assignedTo.setAttribute('required', true);
+        assignedTo.removeAttribute('disabled');
+
+        dateClosedObject.removeAttribute('required', true);
+        validatedBy.removeAttribute('required', true);
+        workPerformed.removeAttribute('required', true);
+
+        dateClosedObject.setAttribute('disabled', true);
+        validatedBy.setAttribute('disabled', true);
+        workPerformed.setAttribute('disabled', true);
+        if (statusChoice.value === 'Deferred') {
+            coryID.setAttribute('required', true);
+            coryID.removeAttribute('disabled', true);
+        } else {
+            coryID.removeAttribute('required', true);
+            coryID.setAttribute('disabled', true);
+        }
+
+    } else if (statusChoice.value === 'Closed') {
+        dateClosedObject.setAttribute('required', true);
+        validatedBy.setAttribute('required', true);
+        assignedTo.setAttribute('required', true);
+        workPerformed.setAttribute('required', true);
+        coryID.removeAttribute('required', true);
+
+        dateClosedObject.removeAttribute('disabled', true);
+        validatedBy.removeAttribute('disabled', true);
+        assignedTo.removeAttribute('disabled', true);
+        workPerformed.removeAttribute('disabled', true);
+        coryID.setAttribute('disabled', true);
+    }
+}
+
+
+
+
 
 const dateSubmittedObject = document.querySelector('#dateSubmitted');
 const dateClosedObject = document.querySelector('#dateClosed');
@@ -38,25 +83,26 @@ dateClosedObject.addEventListener('change', function () {
 });
 
 const statusChoice = document.querySelector('#status');
-statusChoice.addEventListener('change', function () {
-    if (statusChoice.value === 'Closed') {
-        dateClosedObject.value = new Date().toISOString().split('T')[0];
-    } else {
-        dateClosedObject.value = '';
-    }
-});
+const assignedTo = document.querySelector('#assignedTo');
+const validatedBy = document.querySelector('#validatedBy');
+const workPerformed = document.querySelector('#workPerformed');
+const coryID = document.querySelector('#deferredID');
+
+
+
+statusChoice.addEventListener('change', verifyStatusParams);
 
 
 // Captured Slot Toggle
-document.querySelectorAll('input[type="radio"][name="captured"]').forEach(function (radio) {
-    radio.addEventListener('change', function () {
+document.querySelectorAll('input[type="radio"][name="captured"]').forEach(function (captured) {
+    captured.addEventListener('change', function () {
         const capturedSlotInput = document.getElementById('capturedSlotInput');
         const capturedSlot = document.querySelector('#capturedSlot');
         const slotInvalidFeedback = document.querySelector('#slotInvalidFeedback');
-        if (radio.value === 'SavedIC#' || radio.value === 'Snapped') {
+        if (captured.value === 'SavedIC#' || captured.value === 'Snapped') {
             capturedSlotInput.classList.remove('d-none');
             capturedSlot.setAttribute('required', true);
-            if (radio.value === 'SavedIC#') {
+            if (captured.value === 'SavedIC#') {
                 capturedSlot.setAttribute('max', 350);
                 slotInvalidFeedback.innerText = "1-350"
             } else {
@@ -90,4 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
         capturedSlotInput.classList.add('d-none');
         capturedSlot.removeAttribute('required', true);
     }
+    verifyStatusParams();
 });
+
+

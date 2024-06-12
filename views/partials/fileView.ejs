@@ -71,12 +71,12 @@
                      <% }) %>
                     </select>
                     <% pdfArray.forEach((pdf,i) => { %>
-                        <embed id="pdfWindow<%=i%>" class="rounded d-none" src="/attachments<%=pdfArray[i].url%>" width="800px" height="1000px" />
+                        <div class="text-center">
+                            <embed id="pdfWindow<%=i%>" class="rounded d-none" src="/attachments<%=pdfArray[i].url%>" width="800px" height="1000px" />
+                        </div>
                     <% }) %>
                 </div>
-            <!-- <% } else { %>
-                <h2 class="text-center">No PDFs</h2>
-                <% } %> -->
+            <% } %>
         </div>
         
         
@@ -88,9 +88,7 @@
                         <a download="<%=doc.originalName  %>" href="/attachments<%= doc.url %>" class="list-group-item list-group-item-action"> <%= doc.originalName %> </a>
                     <% }) %>
                 </div>
-            <!-- <% } else {%>
-                <h2 class="text-center">No other Attachments</h2>
-                <% } %> -->
+             <% } %>
         </div>
     </div>
 

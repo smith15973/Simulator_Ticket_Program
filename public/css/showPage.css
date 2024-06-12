@@ -1,3 +1,6 @@
+#attachmentSection {
+    display: none;
+}
 @media print {
 
     #imageSection,
@@ -6,4 +9,8 @@
     #editDeleteButtons {
         display: none;
     }
+    #attachmentSection {
+        display: block;
+    }
 }
+

@@ -67,8 +67,8 @@
         </div>
 
         <div class="mb-3">
-            <label for="attachments" class="form-label">Attachments:</label>
-            <input type="file" class="form-control" name="attachments" id="attachments" accept="image/*,.pdf,.docx,.xlsx,.xls,.doc" multiple>
+            <label for="attachments" class="form-label">Add Attachments:</label>
+            <input type="file" class="form-control" name="attachments" id="attachments" accept="image/*,.pdf,.docx,.xlsx,.xls,.doc,.sch,.tis,.evt,.csv,.html" multiple>
         </div>
 
         <div class="mb-3">
@@ -101,7 +101,7 @@
 
         <div class="mb-3">
             <label for="assignedTo" class="form-label">Assigned To</label>
-            <input list="assignees" type="text" class="form-control" name="assignedTo" id="assignedTo" value="<%= ticket.assignedTo %>">
+            <input list="assignees" type="text" class="form-control" name="assignedTo" id="assignedTo" value="<%= ticket.assignedTo %>" >
             <datalist id="assignees">
                 <% const assignees = new Set(); for (let ticket of tickets) { %>
                     <% if (!assignees.has(ticket.assignedTo)) { assignees.add(ticket.assignedTo); %>
@@ -125,18 +125,18 @@
 
             <div class="col-sm-6" id="companyIDField">
                 <label for="deferredID" class="form-label">Corys ID#</label>
-                <input type="text" class="form-control" name="deferredID" id="deferredID" value="<%= ticket.deferredID %>">
+                <input type="text" class="form-control" name="deferredID" id="deferredID" value="<%= ticket.deferredID %>" >
             </div>
         </div>
 
         <div class="mb-3">
             <label for="workPerformed" class="form-label">Work Performed/Disposition</label>
-            <textarea class="form-control" id="workPerformed" name="workPerformed" rows="3"><%= ticket.workPerformed %></textarea>
+            <textarea  class="form-control" id="workPerformed" name="workPerformed" rows="3"><%= ticket.workPerformed %></textarea>
         </div>
 
         <div class="mb-3">
             <label for="validatedBy" class="form-label">Validated By</label>
-            <input list="validators" type="text" class="form-control" name="validatedBy" id="validatedBy" value="<%= ticket.validatedBy %>">
+            <input  list="validators" type="text" class="form-control" name="validatedBy" id="validatedBy" value="<%= ticket.validatedBy %>">
             <datalist id="validators">
                 <% const validators = new Set(); for (let ticket of tickets) { %>
                     <% if (!validators.has(ticket.validatedBy)) { validators.add(ticket.validatedBy); %>
@@ -148,7 +148,7 @@
 
         <div class="mb-3">
             <label for="dateClosed" class="form-label">Date Closed</label>
-            <input  max="<%= new Date().toISOString().split('T')[0] %>" type="date" class="form-control" name="dateClosed" id="dateClosed" <% if (ticket.dateClosed) { %> value="<%= ticket.dateClosed.toISOString().substring(0,10) %>" <% } %>>
+            <input max="<%= new Date().toISOString().split('T')[0] %>" type="date" class="form-control" name="dateClosed" id="dateClosed" <% if (ticket.dateClosed) { %> value="<%= ticket.dateClosed.toISOString().substring(0,10) %>" <% } %>>
         </div>
 
         <% if (ticket.attachments.length > 0) { %>
@@ -158,7 +158,8 @@
                     <% ticket.attachments.forEach((attach, i) => { %>
                         <div class="list-group-item list-group-item">
                             <% if (attach.url.includes('.jpg') || attach.url.includes('.jpeg') || attach.url.includes('.png')) { %>
-                                <img id="image-<%= i %>" class="thumbnails" src="/attachments<%= attach.url %>">
+                                <img data-bs-toggle="modal" data-bs-target="#enlargeImage-<%=i%>" id="image-<%= i %>" class="thumbnails" src="/attachments<%= attach.url %>">
+                                <%- include('../partials/modals/enlargeImages', {attach:attach, i:i}) %>
                             <% } %>
                             <div class="d-inline justify-right">
                                 <label for="attach-<%= i %>"><%= attach.originalName %></label>
