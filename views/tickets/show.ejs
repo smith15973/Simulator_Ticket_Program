@@ -1,122 +1,28 @@
 <% layout('layouts/boilerplate') %>
+<link rel="stylesheet" href="/css/showPage.css">
 
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">Ticket <%= ticket.swrNum %>
-        </h1>
+<div class="container mt-5">
+    <div id="editDeleteButtons" class="d-flex justify-content-between mb">
+        <form action="/tickets/<%=ticket._id%>/edit" class="me-2">
+            <button class="btn btn-primary">Edit</button>
+        </form>
 
-        <div class="d-flex justify-content-between mb-4">
-            <form action="/tickets/<%=ticket._id%>/edit" class="me-2">
-                <button class="btn btn-primary">Edit</button>
-            </form>
+        <form action="/tickets/<%=ticket._id%>?_method=DELETE" method="POST" class="ms-2" id="deleteForm">
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete
+                <img src="/images/svg/trash.svg" alt="trashcan" height="25" width="20" />
+            </button>
+        </form>
+    </div>
+</div>
 
-            <form action="/tickets/<%=ticket._id%>?_method=DELETE" method="POST" class="ms-2" id="deleteForm">
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete
-                    <img src="/images/svg/trash.svg" alt="trashcan" height="25" width="20" />
-                </button>
-            </form>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
-                    <strong>SWR Number:</strong>
-                    <%= ticket.swrNum %>
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
-                    <strong>Originator:</strong>
-                    <%= ticket.originator %>
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
-                    <strong>Date Submitted:</strong>
-                    <%= ticket.dateSubmitted.toISOString().substring(0,10) %>
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div id="captured" class="border border-dark border-2 p-2 overflow-wrap-break-word">
-
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
-                    <strong>Title:</strong>
-                    <%= ticket.title %>
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
-                    <strong>Description:</strong>
-                    <div class="overflow-wrap-break-word">
-                        <%= ticket.description %>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
-                    <strong>Training Impacted:</strong>
-                    <%= ticket.impactedTraining %>
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
-                    <strong>Priority Level:</strong>
-                    <%= ticket.priority %>
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
-                    <strong>System:</strong>
-                    <%= ticket.system %>
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
-                    <strong>Assigned To:</strong>
-                    <%= ticket.assignedTo %>
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
-                    <strong>Status:</strong>
-                    <%= ticket.status %>
-                        <% if (ticket.status==='Deferred' ) { %>
-                            <span>ID: <%= ticket.deferredID %></span>
-                            <% } %>
-                </div>
-            </div>
-            <div class="col-md-6 mb-3 ">
-                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
-                    <strong>Work Performed:</strong>
-                    <%= ticket.workPerformed %>
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
-                    <strong>Validated By:</strong>
-                    <%= ticket.validatedBy %>
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="border border-dark border-2 p-2 overflow-wrap-break-word">
-                    <strong>Date Closed:</strong>
-                    <% if (ticket.dateClosed) { %>
-                        <%= ticket.dateClosed.toISOString().substring(0,10) %>
-                            <% } %>
-                </div>
-            </div>
+            <%- include('../partials/report') %>
+<div class="container mt-3 text-end">
+    <button class="btn btn-success" id="printButton">Print <img src="/images/svg/printer.svg" alt="printer"
+        height="25" width="20" /></button>
+</div>
 
             <%- include('../partials/fileView') %>
 
-        </div>
-        <!-- <div class="text-end">
-            <button class="btn btn-success" id="print_external">Print Report <img src="/images/svg/printer.svg"
-                    alt="trashcan" height="25" width="20" /></button>
-        </div> -->
-
-    </div>
 
     <div class="ticketID" hidden>
         <%= ticket._id %>
@@ -124,6 +30,7 @@
 
     <%- include('../partials/modals/confirmDelete') %>
 
-        <script>const ticket = JSON.parse('<%- JSON.stringify(ticket) %>');</script>
+        <script>const capturedValue = JSON.parse('<%- JSON.stringify(ticket.captured)%>');</script>
+        <script>const capturedSlot = JSON.parse('<%- JSON.stringify(ticket.capturedSlot)%>');</script>
         <script src="/js/showPage.js"></script>
 

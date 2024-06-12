@@ -1,6 +1,10 @@
 #indexTable,h3 {
     display: none;
 }
+#description,
+#workPerformed {
+    white-space: pre-wrap;
+}
 @media print {
     h3 {
         display: block;
@@ -9,20 +13,6 @@
         display: block;
         page-break-after: always;
     }
-    .container.mt-5 {
-        display: none;
-    }
-    .container {
-        max-width: 90%; /* Adjust as necessary */
-        margin: 0 auto; /* Centers the container */
-        padding-left: 5%;
-        padding-right: 5%;
-    }
-    @page {
-        margin-left: 2%;
-        margin-right: 2%;
-    }
-
     .col-print-half {
         flex: 0 0 4.16667%;
         max-width: 4.16667%;

@@ -9,12 +9,12 @@ document.querySelector('#backButton').addEventListener('click', () => {
 })
 
 const captured = document.querySelectorAll('.captured')
-for (let i = 0; i < tickets.length; i++) {
+for (let i = 0; i < capturedValue.length; i++) {
     
-    if (tickets[i].captured === 'Snapped') {
-        captured[i].innerHTML = `<strong>Snapped to Slot</strong> ${tickets[i].capturedSlot}`;
-    } else if (tickets[i].captured === 'SavedIC#') {
-        captured[i].innerHTML = `<strong>Saved IC# in Slot</strong> ${tickets[i].capturedSlot}`;
+    if (capturedValue[i] === 'Snapped') {
+        captured[i].innerHTML = `<strong>Snapped to Slot</strong> ${capturedSlot[i]}`;
+    } else if (capturedValue[i] === 'SavedIC#') {
+        captured[i].innerHTML = `<strong>Saved IC# in Slot</strong> ${capturedSlot[i]}`;
     } else {
         captured[i].innerHTML = '<strong>Not Captured</strong>'
     }

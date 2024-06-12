@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (captured === 'SavedIC#' || captured === 'Snapped') {
         capturedSlotInput.classList.remove('d-none');
         capturedSlot.setAttribute('required', true);
-        if (radio.value === 'SavedIC#') {
+        if (captured === 'SavedIC#') {
             capturedSlot.setAttribute('max', 350);
             slotInvalidFeedback.innerText = "1-350"
         } else {

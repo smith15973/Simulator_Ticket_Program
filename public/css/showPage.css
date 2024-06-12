@@ -1,0 +1,9 @@
+@media print {
+
+    #imageSection,
+    #pdfSection,
+    #docsSection,
+    #editDeleteButtons {
+        display: none;
+    }
+}

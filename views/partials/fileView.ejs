@@ -1,29 +1,36 @@
-<div class="row text-center justify-content-around mb-5">
-    <div class="col-4">
-        <button id="pictureButton" type="button"
-            class="btn btn-secondary disabled">Images</button>
-    </div>
-    <div class="col-4">
-        <button id="pdfButton" type="button" class="btn btn-primary">PDFs</button>
-    </div>
-    <div class="col-4">
-        <button id="docxButton" type="button"
-            class="btn btn-primary">Docs/Spreadsheets</button>
-    </div>
-</div>
-
 <%  const imageArray=new Array();
     const pdfArray=new Array();
     const docsArray=new Array();
     for (let file of ticket.attachments) {
-        if (file.url.includes('.pdf')) {
+        if (file.url.endsWith('.pdf')) {
             pdfArray.push(file);
-        } else if (file.url.includes('.jpg') || file.url.includes('.jpeg') || file.url.includes('.png')) {
+        } else if (file.url.endsWith('.jpg') || file.url.endsWith('.jpeg') || file.url.endsWith('.png')) {
             imageArray.push(file);
-        } else if (file.url.includes('.doc') || file.url.includes('.docx') || file.url.includes('.xls') || file.url.includes('.xlsx')) { 
+        } else if (file.url.endsWith('.doc') || file.url.endsWith('.docx') || file.url.endsWith('.xls') || file.url.endsWith('.xlsx') || file.url.endsWith('.tis') || file.url.endsWith('.csv') || file.url.endsWith('.sch') || file.url.endsWith('.evt') || file.url.endsWith('.html')) { 
             docsArray.push(file);
         } } %>
 
+<% if (ticket.attachments.length > 0) { %>
+<div class="row text-center justify-content-around mt-5 mb-5">
+    <% if (imageArray.length > 0) { %>
+    <div class="col-4">
+        <button id="pictureButton" type="button"
+            class="btn btn-secondary disabled">Images</button>
+    </div>
+    <% } %>
+    <% if (pdfArray.length > 0) { %>
+    <div class="col-4">
+        <button id="pdfButton" type="button" class="btn btn-primary">PDFs</button>
+    </div>
+    <% } %>
+    <% if (docsArray.length > 0) { %>
+    <div class="col-4">
+        <button id="docxButton" type="button"
+            class="btn btn-primary">Other Documents</button>
+    </div>
+    <% } %>
+</div>
+<% } %>
 
     <div class="col-8 offset-2 mb-3">
         <div id="imageSection">
@@ -49,9 +56,7 @@
                     </button>
                     <% } %>
                 </div>
-                <% } else {%>
-                    <h2 class="text-center">Sorry no Images!</h2>
-                    <% } %>
+                <% } %>
         </div>
 
 
@@ -69,9 +74,9 @@
                         <embed id="pdfWindow<%=i%>" class="rounded d-none" src="/attachments<%=pdfArray[i].url%>" width="800px" height="1000px" />
                     <% }) %>
                 </div>
-            <% } else { %>
-                <h2 class="text-center">Sorry no PDFs!</h2>
-                <% } %>
+            <!-- <% } else { %>
+                <h2 class="text-center">No PDFs</h2>
+                <% } %> -->
         </div>
         
         
@@ -83,9 +88,9 @@
                         <a download="<%=doc.originalName  %>" href="/attachments<%= doc.url %>" class="list-group-item list-group-item-action"> <%= doc.originalName %> </a>
                     <% }) %>
                 </div>
-            <% } else {%>
-                <h2 class="text-center">Sorry no other Documents!</h2>
-                <% } %>
+            <!-- <% } else {%>
+                <h2 class="text-center">No other Attachments</h2>
+                <% } %> -->
         </div>
     </div>
 

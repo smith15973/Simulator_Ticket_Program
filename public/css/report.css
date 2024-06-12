@@ -1,0 +1,23 @@
+@media print {
+    .container.mt-5 {
+        display: none;
+    }
+    .container {
+        max-width: 90%; /* Adjust as necessary */
+        margin: 0 auto; /* Centers the container */
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+    @page {
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+}
+
+#description,
+#workPerformed {
+    white-space: pre-wrap;
+}
+a.text-dark {
+    text-decoration:none;
+}
