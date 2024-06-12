@@ -3,9 +3,8 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-8 offset-md-2 text-center">
-            <h1 class="display-4">Sorry, Page Not Found</h1>
-            <p class="lead">The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
-            <p><%= err %></p>
+            <h4 class="display"><%= err.message %></h4>
+            <p><%= err.stack %></p>
             <a href="/tickets" class="btn btn-primary">Go Back to Home</a>
         </div>
     </div>

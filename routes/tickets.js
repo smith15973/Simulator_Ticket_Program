@@ -5,6 +5,8 @@ const SortSelector = require('../helperFunctions/sortSelector');
 const MakeSWRNum = require('../helperFunctions/MakeSWRNum')
 const filterQuery = require('../helperFunctions/filterQueries')
 const searchQuery = require('../helperFunctions/globalSearch')
+const catchAsync = require('../utils/catchAsync');
+const ExpressError = require('../utils/ExpressError');
 
 const Ticket = require('../models/ticket');
 
@@ -26,16 +28,16 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 
-// const { ticketSchema } = require('../schemas.js');
-// const validateTicket = (req, res, next) => {
-//     const { error } = ticketSchema.validate(req.body);
-//     if (error) {
-//         const msg = err.details.map(el => el.message).join(',')
-//         throw new ExpressError(msg, 400);
-//     } else {
-//         next();
-//     }
-// }
+const { ticketSchema } = require('../schemas.js');
+const validateTicket = (req, res, next) => {
+    const { error } = ticketSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400);
+    } else {
+        next();
+    }
+}
 
 
 
@@ -43,7 +45,7 @@ const upload = multer({ storage });
 /************Generate Reports********************/
 
 //print filtered report
-router.get('/report/print', async (req, res) => {
+router.get('/report/print', catchAsync(async (req, res) => {
     query = filterQuery(req);
     const tickets = await Ticket.find(query)
         .sort({ swrNum: -1 });
@@ -52,26 +54,26 @@ router.get('/report/print', async (req, res) => {
         includeIndex = 'Yes';
     }
     res.render('tickets/printReport', { tickets, includeIndex });
-})
+}));
 
 
 //filter generate page
-router.get('/generate', async (req, res) => {
+router.get('/generate', catchAsync(async (req, res) => {
     res.render('tickets/generate');
-})
+}));
 
 //print one report
-router.get('/:id/print', async (req, res) => {
+router.get('/:id/print', catchAsync(async (req, res) => {
     const { id } = req.params;
     const tickets = await Ticket.find({ _id: id })
     res.render('tickets/printReport', { tickets, includeIndex: 'No' });
-})
+}));
 
 
 /************ALL TICKETS********************/
 
 //index of all tickets
-router.get('/', async (req, res) => {
+router.get('/', catchAsync(async (req, res) => {
     const ticketsPerPage = 300;
     const page = parseInt(req.query.page) || 1;
     const skip = (page - 1) * ticketsPerPage;
@@ -109,7 +111,7 @@ router.get('/', async (req, res) => {
         queryString: queryString ? `&${queryString}` : '',
         sortOption // Pass the current sort option to the template
     });
-});
+}));
 
 
 
@@ -117,33 +119,34 @@ router.get('/', async (req, res) => {
 /************NEW TICKETS********************/
 
 //page to submit a ticket
-router.get('/new', async (req, res) => {
+router.get('/new', catchAsync(async (req, res) => {
     const tickets = await Ticket.find({});
     res.render('tickets/new', { tickets });
-})
+}))
 
 //post for a new ticket 
-router.post('/', (upload.array('attachments')), async (req, res) => {
+router.post('/', (upload.array('attachments')), validateTicket, catchAsync(async (req, res) => {
     const ticket = await new Ticket(req.body);
     const tickets = await Ticket.find({});
     ticket.swrNum = MakeSWRNum(ticket, tickets);
     ticket.attachments = req.files.map(f => ({ url: f.path, fileName: f.filename, originalName: f.originalname }));
     ticket.save();
     res.redirect(`/tickets/${ticket._id}`);
-})
+}));
 
 /************SHOW/EDIT/DELETE/Ticket********************/
 
 //edit one specific ticket
-router.get('/:id/edit', async (req, res) => {
+router.get('/:id/edit', catchAsync(async (req, res) => {
     const { id } = req.params;
     const ticket = await Ticket.findById(id)
     const tickets = await Ticket.find({});
     res.render(`tickets/edit`, { ticket, tickets })
-})
+}));
 
 // PUT edit specific ticket by id
-router.put('/:id', (upload.array('attachments')), async (req, res) => {
+router.put('/:id', (upload.array('attachments')), validateTicket, catchAsync(async (req, res) => {
+
     const { id } = req.params;
     const ticket = await Ticket.findByIdAndUpdate(id, req.body, { runValidators: true, new: true });
     const files = req.files.map(f => ({ url: f.path, fileName: f.filename, originalName: f.originalname }));
@@ -162,28 +165,24 @@ router.put('/:id', (upload.array('attachments')), async (req, res) => {
     console.log(req.body);
 
     res.redirect(`/tickets/${ticket._id}`);
-});
+}));
 
 
 //delete specific ticket by id
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
     const ticket = await Ticket.findByIdAndDelete(id);
     for (let file of ticket.attachments) {
         fs.unlinkSync(`${absoluteAttachmentsPath}/${file.fileName}`);
     }
     res.redirect('/tickets');
-});
+}));
 
 //show one specific ticket  
-router.get('/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const ticket = await Ticket.findById(id)
-        res.render(`tickets/show`, { ticket })
-    } catch (e) {
-        res.render('tickets/error')
-    }
-})
+router.get('/:id', catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const ticket = await Ticket.findById(id)
+    res.render(`tickets/show`, { ticket })
+}));
 
 module.exports = router;

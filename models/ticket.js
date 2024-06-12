@@ -11,7 +11,7 @@ const TicketSchema = new Schema({
     },
     originator: {
         type: String,
-        required: true
+        //required: true
     },
     captured: {
         type: String,

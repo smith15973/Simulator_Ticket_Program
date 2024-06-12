@@ -1,19 +1,16 @@
-if (process.env.NODE_ENV !== "production") {
-    require('dotenv').config();
-}
+// if (process.env.NODE_ENV !== "production") {
+//     require('dotenv').config();
+// }
 const express = require('express');
 const path = require('path');
 const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
-const session = require('express-session');
+//const session = require('express-session');
 const MongoStore = require("connect-mongo");
 const ticketRoutes = require('./routes/tickets');
 const favicon = require('serve-favicon');
-
-
-
-
+const ExpressError = require('./utils/ExpressError');
 
 
 const dbURL = 'mongodb://localhost:27017/simTicketSystem'
@@ -30,7 +27,6 @@ const app = express();
 app.engine('ejs', ejsMate);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
 app.use(favicon(path.join(__dirname, 'public', 'images', 'ticketFavicon.png')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/attachments', express.static('/'));
@@ -41,31 +37,31 @@ app.use(methodOverride('_method'));
 
 
 
-const store = MongoStore.create({
-    mongoUrl: dbURL,
-    touchAfter: 24 * 60 * 60,
-    crypto: {
-        secret: 'DavisBesse',
-    }
-});
+// const store = MongoStore.create({
+//     mongoUrl: dbURL,
+//     touchAfter: 24 * 60 * 60,
+//     crypto: {
+//         secret: 'DavisBesse',
+//     }
+// });
 
-store.on("error", function (e) {
-    console.log("Session Store Error", e)
-})
+// store.on("error", function (e) {
+//     console.log("Session Store Error", e)
+// })
 
-const sessionConfig = {
-    store,
-    name: 'session',
-    secret: 'DavisBesse',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        httpOnly: true,
-        //secure: true,
-        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-        maxAge: 1000 * 60 * 60 * 24 * 7
-    }
-}
+// const sessionConfig = {
+//     store,
+//     name: 'session',
+//     secret: 'DavisBesse',
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: {
+//         httpOnly: true,
+//         //secure: true,
+//         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+//         maxAge: 1000 * 60 * 60 * 24 * 7
+//     }
+// }
 
 app.use('/tickets', ticketRoutes);
 
