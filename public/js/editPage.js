@@ -1,8 +1,3 @@
-//const { date } = require("joi");
-
-//const { required } = require("joi");
-
-
 verifyStatusParams = function() {
     if (statusChoice.value == 'Unassigned') {
         dateClosedObject.removeAttribute('required', true);
@@ -29,7 +24,7 @@ verifyStatusParams = function() {
 
         dateClosedObject.setAttribute('disabled', true);
         validatedBy.setAttribute('disabled', true);
-        workPerformed.setAttribute('disabled', true);
+        workPerformed.removeAttribute('disabled', true);
         if (statusChoice.value === 'Deferred') {
             coryID.setAttribute('required', true);
             coryID.removeAttribute('disabled', true);

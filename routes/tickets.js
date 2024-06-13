@@ -21,11 +21,21 @@ const storage = multer.diskStorage({
         cb(null, absoluteAttachmentsPath)
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now() + Math.floor((Math.random()*1000)) + path.extname(file.originalname))
+        cb(null, Date.now() + Math.floor((Math.random() * 1000)) + path.extname(file.originalname))
     }
 })
 
-const upload = multer({ storage });
+const upload = multer({
+    storage,
+    fileFilter: function (req, file, callback) {
+        const ext = path.extname(file.originalname);
+        const extensionSet = new Set(['.png', '.jpg', '.jpeg', '.gif', '.sch', '.tis', '.evt', '.csv', '.html', '.pdf', '.doc', '.docx', '.xls', '.xlsx']);
+        if (!extensionSet.has(ext)) {
+            return callback(new Error(`${ext} file types not allowed`))
+        }
+        callback(null, true)
+    }
+});
 
 
 const { ticketSchema } = require('../schemas.js');

@@ -1,4 +1,4 @@
-document.getElementById("printButton").addEventListener("click", () => {
+document.querySelector("#printButton").addEventListener("click", () => {
     window.print();
 });
 

@@ -4,7 +4,7 @@
     for (let file of ticket.attachments) {
         if (file.url.endsWith('.pdf')) {
             pdfArray.push(file);
-        } else if (file.url.endsWith('.jpg') || file.url.endsWith('.jpeg') || file.url.endsWith('.png')) {
+        } else if (file.url.endsWith('.gif') || file.url.endsWith('.jpg') || file.url.endsWith('.jpeg') || file.url.endsWith('.png')) {
             imageArray.push(file);
         } else if (file.url.endsWith('.doc') || file.url.endsWith('.docx') || file.url.endsWith('.xls') || file.url.endsWith('.xlsx') || file.url.endsWith('.tis') || file.url.endsWith('.csv') || file.url.endsWith('.sch') || file.url.endsWith('.evt') || file.url.endsWith('.html')) { 
             docsArray.push(file);

@@ -5,8 +5,14 @@
         <div class="col-md-8 offset-md-2 text-center">
             <h4 class="display"><%= err.message %></h4>
             <p><%= err.stack %></p>
-            <a href="/tickets" class="btn btn-primary">Go Back to Home</a>
+            <a id="backButton" href="/tickets" class="btn btn-primary">Go Back to Ticket</a>
         </div>
     </div>
 </div>
+
+<script>
+    document.querySelector('#backButton').addEventListener('click', function() {
+        history.back();
+    })
+</script>
 
