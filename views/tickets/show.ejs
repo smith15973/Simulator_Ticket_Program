@@ -7,19 +7,22 @@
             <button class="btn btn-primary">Edit</button>
         </form>
 
-        <form action="/tickets/<%=ticket._id%>?_method=DELETE" method="POST" class="ms-2" id="deleteForm">
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete
-                <img src="/images/svg/trash.svg" alt="trashcan" height="25" width="20" />
-            </button>
-        </form>
+        <div class="ms-2">
+            <button class="btn btn-success" id="printButton">Print <img src="/images/svg/printer.svg" alt="printer"
+                height="25" width="20" /></button>
+        </div>
+
+        
     </div>
 </div>
 
             <%- include('../partials/report') %>
-<div class="container mt-3 text-end">
-    <button class="btn btn-success" id="printButton">Print <img src="/images/svg/printer.svg" alt="printer"
-        height="25" width="20" /></button>
-</div>
+
+            <form action="/tickets/<%=ticket._id%>?_method=DELETE" method="POST" class="container mt-3 text-end" id="deleteForm">
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete
+                    <img src="/images/svg/trash.svg" alt="trashcan" height="25" width="20" />
+                </button>
+            </form>
 
             <%- include('../partials/fileView') %>
 
@@ -32,5 +35,6 @@
 
         <script>const capturedValue = JSON.parse('<%- JSON.stringify(ticket.captured)%>');</script>
         <script>const capturedSlot = JSON.parse('<%- JSON.stringify(ticket.capturedSlot)%>');</script>
+        <script>document.querySelector('#pageBreak').classList.add('d-none');</script>
         <script src="/js/showPage.js"></script>
 

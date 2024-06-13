@@ -6,7 +6,7 @@
             pdfArray.push(file);
         } else if (file.url.endsWith('.gif') || file.url.endsWith('.jpg') || file.url.endsWith('.jpeg') || file.url.endsWith('.png')) {
             imageArray.push(file);
-        } else if (file.url.endsWith('.doc') || file.url.endsWith('.docx') || file.url.endsWith('.xls') || file.url.endsWith('.xlsx') || file.url.endsWith('.tis') || file.url.endsWith('.csv') || file.url.endsWith('.sch') || file.url.endsWith('.evt') || file.url.endsWith('.html')) { 
+        } else { 
             docsArray.push(file);
         } } %>
 
@@ -71,7 +71,7 @@
                      <% }) %>
                     </select>
                     <% pdfArray.forEach((pdf,i) => { %>
-                        <div class="text-center">
+                        <div class="text-center embeddedPDF">
                             <embed id="pdfWindow<%=i%>" class="rounded d-none" src="/attachments<%=pdfArray[i].url%>" width="800px" height="1000px" />
                         </div>
                     <% }) %>
@@ -85,7 +85,7 @@
             <% if (docsArray.length> 0) { %>
                 <div class="list-group">
                     <% docsArray.forEach((doc,i) => { %>
-                        <a download="<%=doc.originalName  %>" href="/attachments<%= doc.url %>" class="list-group-item list-group-item-action"> <%= doc.originalName %> </a>
+                        <a download="<%=doc.originalName  %>" href="/attachments<%= doc.url %>" class="list-group-item list-group-item-action attachLinks"> <%= doc.originalName %> </a>
                     <% }) %>
                 </div>
              <% } %>

@@ -13,3 +13,7 @@ label {
 input[type="radio"] + label {
     font-weight: normal;
 }
+textarea::placeholder {
+    color: red !important; /* Change to your desired color */
+    opacity: 0.7 !important;
+}

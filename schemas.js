@@ -25,8 +25,7 @@ module.exports.ticketSchema = Joi.object({
     assignedTo: Joi
         .when('status', { not: 'Unassigned', then: Joi.string().required() }),
     status: Joi.string().default('Unassigned'),
-    deferredID: Joi.string()
-        .when('status', { is: 'Deferred', then: Joi.string().required() }),
+    deferredID: Joi.string().allow(''),
     workPerformed: Joi.string()
         .when('status', { is: 'Closed', then: Joi.string().required() })
         .when('status', { not: 'Closed', then: Joi.string().allow('') },),

@@ -46,6 +46,14 @@ function getQuery(req) {
         }
     }
 
+    //check if it has attachments
+    if (req.query.attachments === 'Yes') {
+        query.attachments = { $not: { $size: 0 }, $exists: true }
+    } else if (req.query.attachments === 'No') {
+        query.attachments = {  $size: 0  };
+    }
+
+
     //check if swr range is provided
     if (req.query.swrMin && req.query.swrMin !== '' && req.query.swrMax && req.query.swrMax !== '') {
         query.swrNum = { $gte: req.query.swrMin, $lte: req.query.swrMax };

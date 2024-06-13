@@ -5,6 +5,22 @@ const pictures = document.querySelector('#imageSection')
 const pdfs = document.querySelector('#pdfSection')
 const docs = document.querySelector('#docsSection')
 
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.querySelector('.carousel-item')) { 
+    } else if (document.querySelector('.embeddedPDF')) {
+        pdfs.classList.remove('d-none');
+        document.querySelector(`#pdfWindow0`).classList.remove('d-none');
+        pdfButton.classList.add('btn-secondary');
+        pdfButton.classList.remove('btn-primary');
+        pdfButton.classList.add('disabled')
+    } else if (document.querySelector('.attachLinks')) {
+        docs.classList.remove('d-none');
+        docxButton.classList.add('btn-secondary');
+        docxButton.classList.remove('btn-primary');
+        docxButton.classList.add('disabled')
+    }
+})
+
 if (picButton) {
     picButton.addEventListener('click', () => {
         pictures.classList.remove('d-none');

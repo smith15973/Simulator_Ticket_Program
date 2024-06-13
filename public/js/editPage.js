@@ -9,9 +9,6 @@ verifyStatusParams = function() {
         validatedBy.setAttribute('disabled', true);
         assignedTo.setAttribute('disabled', true);
         workPerformed.setAttribute('disabled', true);
-
-        coryID.removeAttribute('required', true);
-        coryID.setAttribute('disabled', true);
     }
 
     else if (statusChoice.value === 'In Progress' || statusChoice.value === 'Ready To Test' || statusChoice.value === 'Deferred') {
@@ -25,26 +22,17 @@ verifyStatusParams = function() {
         dateClosedObject.setAttribute('disabled', true);
         validatedBy.setAttribute('disabled', true);
         workPerformed.removeAttribute('disabled', true);
-        if (statusChoice.value === 'Deferred') {
-            coryID.setAttribute('required', true);
-            coryID.removeAttribute('disabled', true);
-        } else {
-            coryID.removeAttribute('required', true);
-            coryID.setAttribute('disabled', true);
-        }
 
     } else if (statusChoice.value === 'Closed') {
         dateClosedObject.setAttribute('required', true);
         validatedBy.setAttribute('required', true);
         assignedTo.setAttribute('required', true);
         workPerformed.setAttribute('required', true);
-        coryID.removeAttribute('required', true);
 
         dateClosedObject.removeAttribute('disabled', true);
         validatedBy.removeAttribute('disabled', true);
         assignedTo.removeAttribute('disabled', true);
         workPerformed.removeAttribute('disabled', true);
-        coryID.setAttribute('disabled', true);
     }
 }
 
@@ -71,11 +59,11 @@ dateSubmittedObject.addEventListener('change', function () {
     }
 });
 
-dateClosedObject.addEventListener('change', function () {
-    if (dateClosedObject.value !== '') {
-        document.querySelector('#status').value = 'Closed';
-    }
-});
+// dateClosedObject.addEventListener('change', function () {
+//     if (dateClosedObject.value !== '') {
+//         document.querySelector('#status').value = 'Closed';
+//     }
+// });
 
 const statusChoice = document.querySelector('#status');
 const assignedTo = document.querySelector('#assignedTo');
@@ -86,6 +74,13 @@ const coryID = document.querySelector('#deferredID');
 
 
 statusChoice.addEventListener('change', verifyStatusParams);
+statusChoice.addEventListener('change', () => {
+    if (statusChoice.value === 'Closed') {
+        if (dateClosedObject.value === '') {
+            dateClosedObject.value = new Date().toISOString().split('T')[0];
+        }
+    }
+})
 
 
 // Captured Slot Toggle

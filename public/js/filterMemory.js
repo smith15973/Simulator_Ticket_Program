@@ -116,6 +116,19 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         document.querySelector('#priority4').checked = false;
     }
+
+    // Has Attachments
+    if (queryString.includes('attachments=Yes')) {
+        document.querySelector('#attachmentsYes').checked = true;
+    } else {
+        document.querySelector('#attachmentsYes').checked = false;
+    }
+
+    if (queryString.includes('attachments=No')) {
+        document.querySelector('#attachmentsNo').checked = true;
+    } else {
+        document.querySelector('#attachmentsNo').checked = false;
+    }
 })
 
 document.querySelector('#resetButton').addEventListener('click', () => {

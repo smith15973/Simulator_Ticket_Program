@@ -11,6 +11,7 @@ const ExpressError = require('../utils/ExpressError');
 const Ticket = require('../models/ticket');
 
 // type absolute path to where you want to store uploaded attachments
+// data/db/attachments
 const absoluteAttachmentsPath = '/Users/noah/Desktop/Davis_Besse/Simulator_Ticket_Program/attachments';
 
 const fs = require('fs');
@@ -29,7 +30,7 @@ const upload = multer({
     storage,
     fileFilter: function (req, file, callback) {
         const ext = path.extname(file.originalname);
-        const extensionSet = new Set(['.png', '.jpg', '.jpeg', '.gif', '.sch', '.tis', '.evt', '.csv', '.html', '.pdf', '.doc', '.docx', '.xls', '.xlsx']);
+        const extensionSet = new Set(['.png', '.jpg', '.jpeg', '.gif', '.sch', '.tis', '.evt', '.csv', '.html', '.pdf', '.doc', '.docx', '.xls', '.xlsx','.txt']);
         if (!extensionSet.has(ext)) {
             return callback(new Error(`${ext} file types not allowed`))
         }
@@ -93,7 +94,9 @@ router.get('/', catchAsync(async (req, res) => {
     if (search && search !== '') {
         query = searchQuery(req.query.search);
     } else {
+        console.log(req.query);
         query = filterQuery(req);
+        console.log(query);
     }
 
     // Get the sorting option from the query
@@ -166,13 +169,10 @@ router.put('/:id', (upload.array('attachments')), validateTicket, catchAsync(asy
     if (req.body.deleteFiles) {
         for (let deletedFile of req.body.deleteFiles) {
             const file = ticket.attachments.find(f => f.fileName === deletedFile);
-            console.log(file);
-            console.log(file.fileName);
             fs.unlinkSync(`${absoluteAttachmentsPath}/${file.fileName}`);
         }
         await ticket.updateOne({ $pull: { attachments: { fileName: { $in: req.body.deleteFiles } } } });
     }
-    console.log(req.body);
 
     res.redirect(`/tickets/${ticket._id}`);
 }));
