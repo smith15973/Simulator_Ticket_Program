@@ -46,7 +46,7 @@
                         <%= ticket.swrNum %>
                     </div>
                     <div class="col-print-1half border text-break text-center">
-                        <%= ticket.dateSubmitted.toISOString().substring(0,10) %>
+                        <%= ticket.dateSubmitted.toLocaleDateString() %>
                     </div>
                     <div class="col-print-2 border text-break text-center">
                         <%= ticket.originator %>
@@ -62,7 +62,7 @@
                     </div>
                     <div class="col-print-1half border text-break text-center">
                         <% if (ticket.dateClosed) { %>
-                        <%= ticket.dateClosed.toISOString().substring(0,10) %>
+                        <%= ticket.dateClosed.toLocaleDateString() %>
                         <% } %>
                     </div>
                     <% } %>

@@ -3,9 +3,12 @@
 
 <div class="container mt-5">
     <div id="editDeleteButtons" class="d-flex justify-content-between mb">
-        <form action="/tickets/<%=ticket._id%>/edit" class="me-2">
-            <button class="btn btn-primary">Edit</button>
-        </form>
+        <div>
+            <button id="backButton" class="btn btn-primary d-inline">Back</button>
+            <form  action="/tickets/<%=ticket._id%>/edit" class="me-2 d-inline">
+               <button class="btn btn-success">Edit</button>
+            </form>
+        </div>
 
         <div class="ms-2">
             <button class="btn btn-success" id="printButton">Print <img src="/images/svg/printer.svg" alt="printer"

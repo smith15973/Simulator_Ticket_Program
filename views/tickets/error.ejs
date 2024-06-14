@@ -1,11 +1,11 @@
-<%layout('layouts/boilerplate') %>
+<%- layout('layouts/boilerplate') %>
 
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-8 offset-md-2 text-center">
             <h4 class="display"><%= err.message %></h4>
-            <p><%= err.stack %></p>
-            <a id="backButton" href="/tickets" class="btn btn-primary">Go Back to Ticket</a>
+            <p><%= err.status %></p>
+            <a id="backButton" href="/tickets" class="btn btn-primary">Go To Tickets</a>
         </div>
     </div>
 </div>

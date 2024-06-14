@@ -9,7 +9,7 @@
     <!-- date -->
     <div class="mb-2">
         <strong>Date Created:</strong>
-        <%= ticket.dateSubmitted.toISOString().substring(0,10) %>
+        <%= ticket.dateSubmitted.toLocaleDateString() %>
     </div>
 
     <!-- originator -->
@@ -115,7 +115,7 @@
     <div class="mb-2">
         <strong>Date Closed:</strong>
         <% if (ticket.dateClosed) { %>
-            <%= ticket.dateClosed.toISOString().substring(0,10) %>
+            <%= ticket.dateClosed.toLocaleDateString() %>
                 <% } %>
     </div>
 </div>

@@ -2,6 +2,10 @@ document.querySelector("#printButton").addEventListener("click", () => {
     window.print();
 });
 
+document.querySelector("#backButton").addEventListener("click", () => {
+    history.back()
+});
+
 
 const captured = document.querySelector('.captured')
 if (capturedValue === 'Snapped') {
@@ -9,5 +13,5 @@ if (capturedValue === 'Snapped') {
 } else if (capturedValue === 'SavedIC#') {
     captured.innerHTML = `<b>Saved IC# in Slot </b>${capturedSlot}`;
 } else {
-    captured.innerHTML = '<b>Not Captured</b>'
+    //captured.innerHTML = '<b>Not Captured</b>'
 }

@@ -16,6 +16,7 @@ function searchQuery(search) {
     query.push({ title: { $regex: search, $options: 'i' } });
     query.push({ description: { $regex: search, $options: 'i' } });
     query.push({ workPerformed: { $regex: search, $options: 'i' } });
+    query.push({ 'attachments.originalName': { $regex: search, $options: 'i' } });
     //query.push({ dateSubmitted: { $regex: search, $options: 'i' } });
     //query.push({ dateClosed: { $regex: search, $options: 'i' } });
 

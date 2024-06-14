@@ -54,7 +54,7 @@
                             </a>
                         </td>
                         <td class="text-center">
-                            <%= tickets[i].dateSubmitted.toISOString().substring(0, 10) %>
+                            <%= tickets[i].dateSubmitted.toLocaleDateString() %>
                         </td>
                         <td class="text-center">
                             <%= tickets[i].originator %>
@@ -73,7 +73,7 @@
                         </td>
                         <td class="text-center">
                             <% if (tickets[i].dateClosed) { %>
-                                <%= tickets[i].dateClosed.toISOString().substring(0, 10) %>
+                                <%= tickets[i].dateClosed.toLocaleDateString() %>
                                     <% } %>
                         </td>
                     </tr>

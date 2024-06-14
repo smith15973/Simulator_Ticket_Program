@@ -94,9 +94,7 @@ router.get('/', catchAsync(async (req, res) => {
     if (search && search !== '') {
         query = searchQuery(req.query.search);
     } else {
-        console.log(req.query);
         query = filterQuery(req);
-        console.log(query);
     }
 
     // Get the sorting option from the query
