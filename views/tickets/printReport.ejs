@@ -75,9 +75,11 @@
         <%- include('../partials/report', {ticket:ticket}) %>
     <% } %>
 
-    <script>
-        const capturedValue = JSON.parse('<%- JSON.stringify(tickets.map(ticket => ticket.captured)) %>');
-        const capturedSlot = JSON.parse('<%- JSON.stringify(tickets.map(ticket => ticket.capturedSlot)) %>');
-    </script>
     
-        <script src="/js/printReportPage.js"></script>
+    <script>
+        function jsonEscape(str)  {
+            return str.replace(/\n/g, "\\\\n").replace(/\r/g, "\\\\r").replace(/\t/g, "\\\\t");
+        }
+        const tickets = JSON.parse(jsonEscape('<%- JSON.stringify(tickets)%>'));
+    </script>
+    <script src="/js/printReportPage.js"></script>

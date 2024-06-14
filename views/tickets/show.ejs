@@ -36,8 +36,6 @@
 
     <%- include('../partials/modals/confirmDelete') %>
 
-        <script>const capturedValue = JSON.parse('<%- JSON.stringify(ticket.captured)%>');</script>
-        <script>const capturedSlot = JSON.parse('<%- JSON.stringify(ticket.capturedSlot)%>');</script>
-        <script>document.querySelector('#pageBreak').classList.add('d-none');</script>
+        <script>let ticket = '<%- JSON.stringify(ticket)%>';</script>
         <script src="/js/showPage.js"></script>
 

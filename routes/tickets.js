@@ -73,14 +73,6 @@ router.get('/generate', catchAsync(async (req, res) => {
     res.render('tickets/generate');
 }));
 
-//print one report
-router.get('/:id/print', catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const tickets = await Ticket.find({ _id: id })
-    res.render('tickets/printReport', { tickets, includeIndex: 'No' });
-}));
-
-
 /************ALL TICKETS********************/
 
 //index of all tickets
