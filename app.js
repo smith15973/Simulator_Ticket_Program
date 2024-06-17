@@ -10,8 +10,12 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const MongoStore = require("connect-mongo");
 const ticketRoutes = require('./routes/tickets');
+const userRoutes = require('./routes/users');
 const favicon = require('serve-favicon');
 const ExpressError = require('./utils/ExpressError');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user');
 
 
 const dbURL = 'mongodb://localhost:27017/simTicketSystem'
@@ -38,21 +42,21 @@ app.use(methodOverride('_method'));
 
 
 
-// const store = MongoStore.create({
-//     mongoUrl: dbURL,
-//     touchAfter: 24 * 60 * 60,
-//     crypto: {
-//         secret: 'DavisBesse',
-//     }
-// });
+const store = MongoStore.create({
+    mongoUrl: dbURL,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: 'DavisBesse',
+    }
+});
 
-// store.on("error", function (e) {
-//     console.log("Session Store Error", e)
-// })
+store.on("error", function (e) {
+    console.log("Session Store Error", e)
+})
 
 const sessionConfig = {
-    //store,
-    //name: 'session',
+    store,
+    name: 'session',
     secret: 'DavisBesse',
     resave: false,
     saveUninitialized: true,
@@ -66,6 +70,14 @@ const sessionConfig = {
 
 app.use(session(sessionConfig));
 app.use(flash());
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
@@ -73,7 +85,9 @@ app.use((req, res, next) => {
 
 })
 
+app.use('/', userRoutes);
 app.use('/tickets', ticketRoutes);
+
 
 
 app.all('*', (req, res, next) => {

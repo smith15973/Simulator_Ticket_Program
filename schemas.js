@@ -32,7 +32,7 @@ module.exports.ticketSchema = Joi.object({
     validatedBy: Joi.string()
         .when('status', {
             is: 'Closed',
-            then: Joi.string().required().min(3).max(30)
+            then: Joi.string().required()
         }),
     dateClosed: Joi.date()
         .when('status', {

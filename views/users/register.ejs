@@ -1,0 +1,31 @@
+<%- layout('layouts/boilerplate') %>
+
+    <div class=" container offset-3 col-6 mt-5">
+        <h1 class="text-center mt-3">Register</h1>
+        <form action="/register" method="post" class="validated-form mb-5" novalidate>
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+                <div class="invalid-feedback">
+                    Please enter a username.
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+                <div class="invalid-feedback">
+                    Please enter a valid password.
+                </div>
+            </div>
+            <div class="row justify-content-between">
+                <div class="d-inline col-6">
+                    <a href="/login">
+                        Have an account?
+                    </a>
+                </div>
+                <div class="d-inline col-6 text-end">
+                    <button class="btn btn-success">Register</button>
+                </div>
+            </div>
+        </form>
+    </div>
