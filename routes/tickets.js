@@ -30,7 +30,7 @@ const upload = multer({
     storage,
     fileFilter: function (req, file, callback) {
         const ext = path.extname(file.originalname);
-        const extensionSet = new Set(['.png', '.jpg', '.jpeg', '.gif', '.sch', '.tis', '.evt', '.csv', '.html', '.pdf', '.doc', '.docx', '.xls', '.xlsx','.txt']);
+        const extensionSet = new Set(['.png', '.jpg', '.jpeg', '.gif', '.sch', '.tis', '.evt', '.csv', '.html', '.pdf', '.doc', '.docx', '.xls', '.xlsx', '.txt']);
         if (!extensionSet.has(ext)) {
             return callback(new Error(`${ext} file types not allowed`))
         }
@@ -130,11 +130,12 @@ router.get('/new', catchAsync(async (req, res) => {
 
 //post for a new ticket 
 router.post('/', (upload.array('attachments')), validateTicket, catchAsync(async (req, res) => {
-    const ticket = await new Ticket(req.body);
+    req.flash('success', 'Successfully Submitted Ticket!');
+    const ticket = new Ticket(req.body);
     const tickets = await Ticket.find({});
     ticket.swrNum = MakeSWRNum(ticket, tickets);
     ticket.attachments = req.files.map(f => ({ url: f.path, fileName: f.filename, originalName: f.originalname }));
-    ticket.save();
+    await ticket.save();
     res.redirect(`/tickets/${ticket._id}`);
 }));
 
@@ -142,16 +143,23 @@ router.post('/', (upload.array('attachments')), validateTicket, catchAsync(async
 
 //edit one specific ticket
 router.get('/:id/edit', catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const ticket = await Ticket.findById(id)
+    const ticket = await Ticket.findById(req.params.id)
+    if (!ticket) {
+        req.flash('error', 'Cannot Find That Ticket!');
+        return res.redirect('/tickets');
+    }
     const tickets = await Ticket.find({});
     res.render(`tickets/edit`, { ticket, tickets })
 }));
 
 // PUT edit specific ticket by id
 router.put('/:id', (upload.array('attachments')), validateTicket, catchAsync(async (req, res) => {
-
     const { id } = req.params;
+    if (await Ticket.exists({ swrNum: req.body.swrNum, _id: { $ne: id } })) {
+        req.flash('error', 'SWR Number Already Exists!');
+        return res.redirect(`/tickets/${id}/edit`);
+    }
+    req.flash('success', 'Successfully Updated Ticket!');
     const ticket = await Ticket.findByIdAndUpdate(id, req.body, { runValidators: true, new: true });
     const files = req.files.map(f => ({ url: f.path, fileName: f.filename, originalName: f.originalname }));
     ticket.attachments.push(...files);
@@ -171,6 +179,7 @@ router.put('/:id', (upload.array('attachments')), validateTicket, catchAsync(asy
 
 //delete specific ticket by id
 router.delete('/:id', catchAsync(async (req, res) => {
+    req.flash('success', 'Successfully Deleted Ticket!');
     const { id } = req.params;
     const ticket = await Ticket.findByIdAndDelete(id);
     for (let file of ticket.attachments) {
@@ -181,8 +190,11 @@ router.delete('/:id', catchAsync(async (req, res) => {
 
 //show one specific ticket  
 router.get('/:id', catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const ticket = await Ticket.findById(id)
+    const ticket = await Ticket.findById(req.params.id);
+    if (!ticket) {
+        req.flash('error', 'Cannot Find That Ticket!');
+        return res.redirect('/tickets');
+    }
     res.render(`tickets/show`, { ticket })
 }));
 

@@ -2,7 +2,7 @@ document.querySelector("#printButton").addEventListener("click", () => {
     window.print();
 });
 
-document.querySelector("#backButton").addEventListener("click", () => {
+if (document.querySelector("#backButton"))document.querySelector("#backButton").addEventListener("click", () => {
     history.back()
 });
 document.querySelector('#pageBreak').remove();

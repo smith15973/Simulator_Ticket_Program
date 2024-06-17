@@ -6,7 +6,8 @@ const path = require('path');
 const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
-//const session = require('express-session');
+const session = require('express-session');
+const flash = require('connect-flash');
 const MongoStore = require("connect-mongo");
 const ticketRoutes = require('./routes/tickets');
 const favicon = require('serve-favicon');
@@ -49,19 +50,28 @@ app.use(methodOverride('_method'));
 //     console.log("Session Store Error", e)
 // })
 
-// const sessionConfig = {
-//     store,
-//     name: 'session',
-//     secret: 'DavisBesse',
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: {
-//         httpOnly: true,
-//         //secure: true,
-//         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-//         maxAge: 1000 * 60 * 60 * 24 * 7
-//     }
-// }
+const sessionConfig = {
+    //store,
+    //name: 'session',
+    secret: 'DavisBesse',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        //secure: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    }
+}
+
+app.use(session(sessionConfig));
+app.use(flash());
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+
+})
 
 app.use('/tickets', ticketRoutes);
 
