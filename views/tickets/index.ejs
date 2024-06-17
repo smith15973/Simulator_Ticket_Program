@@ -3,14 +3,19 @@
     <link rel="stylesheet" href="/css/indexPage.css">
 
     <div class="container mt-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-inline-flex">
+        <div class="row mb-2">
+            <div class="col-4 my-auto">
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Filter <img src="/images/svg/filter.svg" alt="trashcan" height="25" width="20" />
                 </button>
             </div>
-            <div class="d-inline-flex">
+
+            <div class="col-4 text-center my-auto">
+                <%= totalTickets %> Tickets Found
+            </div>
+
+            <div class="col-4 text-end my-auto">
                 <label for="sort">Sort:  </label>
                 <select name="sort" id="sort" class="form-control-sm">
                     <option value="swrHigh">SWRNum: High-Low</option>

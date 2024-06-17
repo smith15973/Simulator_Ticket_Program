@@ -45,7 +45,7 @@ descriptors = [
 
 
 const mongoose = require('mongoose');
-const Ticket = require('./models/ticket');
+const Ticket = require('../models/ticket');
 
 mongoose.connect('mongodb://localhost:27017/simTicketSystem')
     .then(() => {

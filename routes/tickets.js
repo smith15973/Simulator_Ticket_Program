@@ -112,7 +112,8 @@ router.get('/', catchAsync(async (req, res) => {
         currentPage: page,
         totalPages: Math.ceil(totalTickets / ticketsPerPage),
         queryString: queryString ? `&${queryString}` : '',
-        sortOption // Pass the current sort option to the template
+        sortOption, // Pass the current sort option to the template
+        totalTickets
     });
 }));
 

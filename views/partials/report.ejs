@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="/css/report.css">
-<div class="container">
+<div class="container" style="page-break-inside: avoid;">
     <h1  class="text-center mb-3">
         <a class="text-dark" href="/tickets/<%=ticket._id%>">
             SWR <%= ticket.swrNum %>
@@ -103,12 +103,10 @@
         <strong>Work Performed:</strong>
         <p id="workPerformed"><%= ticket.workPerformed %></p>
     </div>
-
     <hr>
-
     <!-- Validated By -->
     <div class="mb-2">
-        <strong>Validated By</strong>: <%= ticket.validatedBy %>
+        <b>Validated By</b>: <%= ticket.validatedBy %>
     </div>
 
     <!-- Date Closed -->

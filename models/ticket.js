@@ -65,6 +65,7 @@ const TicketSchema = new Schema({
     },
     workPerformed: {
         type: Array,
+        default: '',
     },
     validatedBy: {
         type: String

@@ -14,6 +14,8 @@ node_modules/.DS_Store
 *.doc
 *.xls
 *.xlsx
+data.json
+past5Years.json
 
 attachments/1718288833389.txt
 node_modules/.DS_Store
