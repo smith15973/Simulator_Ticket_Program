@@ -72,6 +72,10 @@ const TicketSchema = new Schema({
     },
     dateClosed: {
         type: Date
+    },
+    author: {
+        type: Schema.Types.ObjectID,
+        ref: 'User'
     }
 })
 

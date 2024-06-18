@@ -79,6 +79,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
@@ -105,4 +106,4 @@ app.use((err,req,res,next) => {
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Serving on port ${port}`);
-}) 
+});

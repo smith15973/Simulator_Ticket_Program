@@ -11,19 +11,26 @@
                 </div>
             </div>
             <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+                <div class="invalid-feedback">
+                    Please enter a valid email.
+                </div>
+            </div>
+            <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control" id="password" name="password" required>
                 <div class="invalid-feedback">
                     Please enter a valid password.
                 </div>
             </div>
-            <div class="row justify-content-between">
-                <div class="d-inline col-6">
+            <div class="row">
+                <div class="d-inline col-8">
                     <a href="/login">
                         Have an account?
                     </a>
                 </div>
-                <div class="d-inline col-6 text-end">
+                <div class="d-inline col-4 text-end">
                     <button class="btn btn-success">Register</button>
                 </div>
             </div>

@@ -9,9 +9,12 @@
                 Back
             </button>
             <% } %>
+            <%if (currentUser && currentUser.admin || (ticket.author && currentUser && ticket.author.username === currentUser.username)) {%>
             <form  action="/tickets/<%=ticket._id%>/edit" class="me-2 d-inline">
                <button class="btn btn-success">Edit</button>
             </form>
+            <% } %>
+            
         </div>
 
         <div class="ms-2">
@@ -25,11 +28,13 @@
 
             <%- include('../partials/report') %>
 
+            <%if (currentUser && currentUser.admin || (ticket.author && currentUser && ticket.author.username === currentUser.username)) {%>
             <form action="/tickets/<%=ticket._id%>?_method=DELETE" method="POST" class="container mt-3 text-end" id="deleteForm">
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete
                     <img src="/images/svg/trash.svg" alt="trashcan" height="25" width="20" />
                 </button>
             </form>
+            <% } %>
 
             <%- include('../partials/fileView') %>
 

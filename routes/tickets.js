@@ -7,6 +7,7 @@ const filterQuery = require('../helperFunctions/filterQueries')
 const searchQuery = require('../helperFunctions/globalSearch')
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
+const { isLoggedIn } = require('../middleware');
 
 const Ticket = require('../models/ticket');
 
@@ -135,6 +136,7 @@ router.post('/', (upload.array('attachments')), validateTicket, catchAsync(async
     const tickets = await Ticket.find({});
     ticket.swrNum = MakeSWRNum(ticket, tickets);
     ticket.attachments = req.files.map(f => ({ url: f.path, fileName: f.filename, originalName: f.originalname }));
+    ticket.author = res.locals.currentUser
     await ticket.save();
     res.redirect(`/tickets/${ticket._id}`);
 }));
@@ -142,7 +144,7 @@ router.post('/', (upload.array('attachments')), validateTicket, catchAsync(async
 /************SHOW/EDIT/DELETE/Ticket********************/
 
 //edit one specific ticket
-router.get('/:id/edit', catchAsync(async (req, res) => {
+router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
     const ticket = await Ticket.findById(req.params.id)
     if (!ticket) {
         req.flash('error', 'Cannot Find That Ticket!');
@@ -153,7 +155,7 @@ router.get('/:id/edit', catchAsync(async (req, res) => {
 }));
 
 // PUT edit specific ticket by id
-router.put('/:id', (upload.array('attachments')), validateTicket, catchAsync(async (req, res) => {
+router.put('/:id', isLoggedIn, (upload.array('attachments')), validateTicket, catchAsync(async (req, res) => {
     const { id } = req.params;
     if (await Ticket.exists({ swrNum: req.body.swrNum, _id: { $ne: id } })) {
         req.flash('error', 'SWR Number Already Exists!');
@@ -178,7 +180,7 @@ router.put('/:id', (upload.array('attachments')), validateTicket, catchAsync(asy
 
 
 //delete specific ticket by id
-router.delete('/:id', catchAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, catchAsync(async (req, res) => {
     req.flash('success', 'Successfully Deleted Ticket!');
     const { id } = req.params;
     const ticket = await Ticket.findByIdAndDelete(id);
@@ -190,7 +192,7 @@ router.delete('/:id', catchAsync(async (req, res) => {
 
 //show one specific ticket  
 router.get('/:id', catchAsync(async (req, res) => {
-    const ticket = await Ticket.findById(req.params.id);
+    const ticket = await Ticket.findById(req.params.id).populate('author');
     if (!ticket) {
         req.flash('error', 'Cannot Find That Ticket!');
         return res.redirect('/tickets');
