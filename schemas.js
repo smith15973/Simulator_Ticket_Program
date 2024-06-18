@@ -29,14 +29,21 @@ module.exports.ticketSchema = Joi.object({
     workPerformed: Joi.string()
         .when('status', { is: 'Closed', then: Joi.string().required() })
         .when('status', { not: 'Closed', then: Joi.string().allow('') },),
-    validatedBy: Joi.string()
-        .when('status', {
-            is: 'Closed',
-            then: Joi.string().required()
-        }),
+    validatedBy: Joi.string(),
+        // .when('status', {
+        //     is: 'Closed',
+        //     then: Joi.string().required()
+        // }),
     dateClosed: Joi.date()
         .when('status', {
             is: 'Closed', then: Joi.date().required()
         }),
 }).required()
     .options({ allowUnknown: true });
+
+    
+    module.exports.userSchema = Joi.object({
+        email: Joi.string().required(),
+        username: Joi.string().required(),
+        password: Joi.string().required(),
+    }).required()

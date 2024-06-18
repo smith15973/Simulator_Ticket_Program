@@ -9,7 +9,7 @@
                 Back
             </button>
             <% } %>
-            <%if (currentUser && currentUser.admin || (ticket.author && currentUser && ticket.author.username === currentUser.username)) {%>
+            <%if (currentUser && currentUser.admin || (ticket.author && currentUser && ticket.author._id.equals(currentUser._id))) {%>
             <form  action="/tickets/<%=ticket._id%>/edit" class="me-2 d-inline">
                <button class="btn btn-success">Edit</button>
             </form>

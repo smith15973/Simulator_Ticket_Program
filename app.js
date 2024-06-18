@@ -32,7 +32,7 @@ const app = express();
 app.engine('ejs', ejsMate);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.use(favicon(path.join(__dirname, 'public', 'images', 'ticketFavicon.png')));
+app.use(favicon(path.join(__dirname, 'public', 'images','svg', 'filter.svg')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/attachments', express.static('/'));
 app.use(express.urlencoded({ extended: true }));

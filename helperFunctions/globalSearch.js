@@ -1,4 +1,4 @@
-function searchQuery(search) {
+function searchQuery(search, res) {
     let query = [];
 
     if (!isNaN(search)) {
@@ -19,9 +19,12 @@ function searchQuery(search) {
     query.push({ 'attachments.originalName': { $regex: search, $options: 'i' } });
     //query.push({ dateSubmitted: { $regex: search, $options: 'i' } });
     //query.push({ dateClosed: { $regex: search, $options: 'i' } });
+    if (!res.locals.currentUser.admin) {
+        query.author = res.locals.currentUser
+    }
 
 
-    return { $or: query };
+    return { $or: query, author:query.author };
 }
 
 

@@ -1,4 +1,4 @@
-function getQuery(req) {
+function getQuery(req, res) {
     let query = {};
 
     // Check if priorities are provided
@@ -50,7 +50,7 @@ function getQuery(req) {
     if (req.query.attachments === 'Yes') {
         query.attachments = { $not: { $size: 0 }, $exists: true }
     } else if (req.query.attachments === 'No') {
-        query.attachments = {  $size: 0  };
+        query.attachments = { $size: 0 };
     }
 
 
@@ -109,6 +109,10 @@ function getQuery(req) {
     //check if workPerformed is provided
     if (req.query.workPerformed && req.query.workPerformed !== '') {
         query.workPerformed = { $regex: req.query.workPerformed, $options: 'i' }
+    }
+
+    if (!res.locals.currentUser.admin) {
+        query.author = res.locals.currentUser
     }
 
     return query;

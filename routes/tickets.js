@@ -6,8 +6,8 @@ const MakeSWRNum = require('../helperFunctions/MakeSWRNum')
 const filterQuery = require('../helperFunctions/filterQueries')
 const searchQuery = require('../helperFunctions/globalSearch')
 const catchAsync = require('../utils/catchAsync');
-const ExpressError = require('../utils/ExpressError');
-const { isLoggedIn } = require('../middleware');
+
+const { isLoggedIn, isAuthor, validateTicket } = require('../middleware');
 
 const Ticket = require('../models/ticket');
 
@@ -40,16 +40,6 @@ const upload = multer({
 });
 
 
-const { ticketSchema } = require('../schemas.js');
-const validateTicket = (req, res, next) => {
-    const { error } = ticketSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400);
-    } else {
-        next();
-    }
-}
 
 
 
@@ -57,8 +47,8 @@ const validateTicket = (req, res, next) => {
 /************Generate Reports********************/
 
 //print filtered report
-router.get('/report/print', catchAsync(async (req, res) => {
-    query = filterQuery(req);
+router.get('/report/print', isLoggedIn, catchAsync(async (req, res) => {
+    query = filterQuery(req, res);
     const tickets = await Ticket.find(query)
         .sort({ swrNum: -1 });
     let includeIndex = 'No';
@@ -70,14 +60,14 @@ router.get('/report/print', catchAsync(async (req, res) => {
 
 
 //filter generate page
-router.get('/generate', catchAsync(async (req, res) => {
+router.get('/generate', isLoggedIn, catchAsync(async (req, res) => {
     res.render('tickets/generate');
 }));
 
 /************ALL TICKETS********************/
 
 //index of all tickets
-router.get('/', catchAsync(async (req, res) => {
+router.get('/', isLoggedIn, catchAsync(async (req, res) => {
     const ticketsPerPage = 300;
     const page = parseInt(req.query.page) || 1;
     const skip = (page - 1) * ticketsPerPage;
@@ -85,10 +75,12 @@ router.get('/', catchAsync(async (req, res) => {
     const search = req.query.search;
     let query;
     if (search && search !== '') {
-        query = searchQuery(req.query.search);
+        query = searchQuery(req.query.search, res);
     } else {
-        query = filterQuery(req);
+        query = filterQuery(req, res);
     }
+
+
 
     // Get the sorting option from the query
     const sortOption = req.query.sort || '';
@@ -124,13 +116,13 @@ router.get('/', catchAsync(async (req, res) => {
 /************NEW TICKETS********************/
 
 //page to submit a ticket
-router.get('/new', catchAsync(async (req, res) => {
+router.get('/new', isLoggedIn, catchAsync(async (req, res) => {
     const tickets = await Ticket.find({});
     res.render('tickets/new', { tickets });
 }))
 
 //post for a new ticket 
-router.post('/', (upload.array('attachments')), validateTicket, catchAsync(async (req, res) => {
+router.post('/', isLoggedIn, (upload.array('attachments')), validateTicket, catchAsync(async (req, res) => {
     req.flash('success', 'Successfully Submitted Ticket!');
     const ticket = new Ticket(req.body);
     const tickets = await Ticket.find({});
@@ -144,7 +136,7 @@ router.post('/', (upload.array('attachments')), validateTicket, catchAsync(async
 /************SHOW/EDIT/DELETE/Ticket********************/
 
 //edit one specific ticket
-router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
+router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
     const ticket = await Ticket.findById(req.params.id)
     if (!ticket) {
         req.flash('error', 'Cannot Find That Ticket!');
@@ -155,7 +147,7 @@ router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
 }));
 
 // PUT edit specific ticket by id
-router.put('/:id', isLoggedIn, (upload.array('attachments')), validateTicket, catchAsync(async (req, res) => {
+router.put('/:id', isLoggedIn, isAuthor, (upload.array('attachments')), validateTicket, catchAsync(async (req, res) => {
     const { id } = req.params;
     if (await Ticket.exists({ swrNum: req.body.swrNum, _id: { $ne: id } })) {
         req.flash('error', 'SWR Number Already Exists!');
@@ -180,7 +172,7 @@ router.put('/:id', isLoggedIn, (upload.array('attachments')), validateTicket, ca
 
 
 //delete specific ticket by id
-router.delete('/:id', isLoggedIn, catchAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
     req.flash('success', 'Successfully Deleted Ticket!');
     const { id } = req.params;
     const ticket = await Ticket.findByIdAndDelete(id);
@@ -191,7 +183,7 @@ router.delete('/:id', isLoggedIn, catchAsync(async (req, res) => {
 }));
 
 //show one specific ticket  
-router.get('/:id', catchAsync(async (req, res) => {
+router.get('/:id', isLoggedIn, catchAsync(async (req, res) => {
     const ticket = await Ticket.findById(req.params.id).populate('author');
     if (!ticket) {
         req.flash('error', 'Cannot Find That Ticket!');

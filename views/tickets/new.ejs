@@ -7,7 +7,10 @@
 
             <div class="mb-3">
                 <label for="originator" class="form-label">Originator:</label>
-                <input class="form-control" type="text" list="originators" name="originator" id="originator" placeholder="John Smith" required>
+                <input class="form-control" type="text" list="originators" name="originator" id="originator" placeholder="John Smith" <% if (currentUser) { %>
+                    value="<%= currentUser.username %>"
+                    <% } %>
+                     required>
                 <datalist id="originators">
                     <% const names=new Set(); for (let ticket of tickets) { %>
                         <%if (!names.has(ticket.originator)) { names.add(ticket.originator);%>

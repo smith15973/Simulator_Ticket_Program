@@ -11,7 +11,7 @@ verifyStatusParams = function() {
         workPerformed.setAttribute('disabled', true);
     }
 
-    else if (statusChoice.value === 'In Progress' || statusChoice.value === 'Ready To Test' || statusChoice.value === 'Deferred') {
+    else if (statusChoice.value === 'In Progress' || statusChoice.value === 'Ready To Test') {
         assignedTo.setAttribute('required', true);
         assignedTo.removeAttribute('disabled');
 
@@ -23,7 +23,7 @@ verifyStatusParams = function() {
         validatedBy.setAttribute('disabled', true);
         workPerformed.removeAttribute('disabled', true);
 
-    } else if (statusChoice.value === 'Closed') {
+    } else if (statusChoice.value === 'Closed' || statusChoice.value === 'Deferred') {
         dateClosedObject.setAttribute('required', true);
         validatedBy.setAttribute('required', true);
         assignedTo.setAttribute('required', true);
