@@ -128,7 +128,7 @@ router.post('/', isLoggedIn, (upload.array('attachments')), validateTicket, catc
     const tickets = await Ticket.find({});
     ticket.swrNum = MakeSWRNum(ticket, tickets);
     ticket.attachments = req.files.map(f => ({ url: f.path, fileName: f.filename, originalName: f.originalname }));
-    ticket.author = res.locals.currentUser
+    ticket.author = res.locals.currentUser;
     await ticket.save();
     res.redirect(`/tickets/${ticket._id}`);
 }));
@@ -183,7 +183,7 @@ router.delete('/:id', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
 }));
 
 //show one specific ticket  
-router.get('/:id', isLoggedIn, catchAsync(async (req, res) => {
+router.get('/:id', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
     const ticket = await Ticket.findById(req.params.id).populate('author');
     if (!ticket) {
         req.flash('error', 'Cannot Find That Ticket!');
