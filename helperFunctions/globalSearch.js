@@ -17,14 +17,17 @@ function searchQuery(search, res) {
     query.push({ description: { $regex: search, $options: 'i' } });
     query.push({ workPerformed: { $regex: search, $options: 'i' } });
     query.push({ 'attachments.originalName': { $regex: search, $options: 'i' } });
-    //query.push({ dateSubmitted: { $regex: search, $options: 'i' } });
+    
+    //query.push({ dateSubmitted: search.toISOString()});
     //query.push({ dateClosed: { $regex: search, $options: 'i' } });
+    
     if (!res.locals.currentUser.admin) {
         query.author = res.locals.currentUser
+        return { $or: query, author: query.author };
     }
 
 
-    return { $or: query, author:query.author };
+    return { $or: query };
 }
 
 

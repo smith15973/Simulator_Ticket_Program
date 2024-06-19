@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const session = require('express-session');
 const flash = require('connect-flash');
-const MongoStore = require("connect-mongo");
+const MongoDBStore = require("connect-mongo");
 const ticketRoutes = require('./routes/tickets');
 const userRoutes = require('./routes/users');
 const favicon = require('serve-favicon');
@@ -20,7 +20,7 @@ const User = require('./models/user');
 const mongoSanitize = require('express-mongo-sanitize')
 
 
-const dbURL = 'mongodb://localhost:27017/simTicketSystem'
+const dbURL = process.env.DB_URL || 'mongodb://localhost:27017/simTicketSystem'
 mongoose.connect(dbURL);
 
 const db = mongoose.connection;
@@ -43,13 +43,13 @@ app.use(mongoSanitize());
 
 
 
+const secret = process.env.SECRET || 'DavisBesse'
 
-
-const store = MongoStore.create({
+const store = MongoDBStore.create({
     mongoUrl: dbURL,
     touchAfter: 24 * 60 * 60,
     crypto: {
-        secret: 'DavisBesse',
+        secret,
     }
 });
 
@@ -60,7 +60,7 @@ store.on("error", function (e) {
 const sessionConfig = {
     store,
     name: 'session',
-    secret: 'DavisBesse',
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {

@@ -15,16 +15,6 @@ const { isLoggedIn, isAuthor, validateTicket } = require('../middleware');
 
 const Ticket = require('../models/ticket');
 
-
-
-
-
-
-
-
-
-
-
 /************Generate Reports********************/
 
 //print filtered report

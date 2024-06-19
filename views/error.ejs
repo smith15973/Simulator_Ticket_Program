@@ -5,6 +5,9 @@
         <div class="col-md-8 offset-md-2 text-center">
             <h4 class="display"><%= err.message %></h4>
             <p><%= err.status %></p>
+            <% if (process.env.NODE_ENV !== "production") { %>
+                <p><%= err.stack %></p>
+            <% } %>
             <a id="backButton" href="/tickets" class="btn btn-primary">Go To Home</a>
         </div>
     </div>

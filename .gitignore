@@ -2,6 +2,8 @@
 *.DS_Store
 node_modules/.DS_Store
 node_modules/cssstyle/.DS_Store
+node_modules
+attachments
 
 *.env
 node_modules/.DS_Store
