@@ -2,4 +2,7 @@
     nav {
         display: none;
     }
+    body {
+        background-color: white;
+    }
 }
