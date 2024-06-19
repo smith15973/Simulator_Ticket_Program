@@ -7,8 +7,8 @@ document.querySelectorAll('input[type="radio"][name="captured"]').forEach(functi
             capturedSlotInput.classList.remove('d-none');
             capturedSlot.setAttribute('required', true);
             if (radio.value === 'SavedIC#') {
-                capturedSlot.setAttribute('max', 350);
-                slotInvalidFeedback.innerText = "1-350"
+                capturedSlot.setAttribute('max', 420);
+                slotInvalidFeedback.innerText = "1-420"
             } else {
                 capturedSlot.setAttribute('max', 5);
                 slotInvalidFeedback.innerText = "1-5"

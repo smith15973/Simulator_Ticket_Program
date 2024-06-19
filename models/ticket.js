@@ -20,7 +20,7 @@ const TicketSchema = new Schema({
     },
     capturedSlot: {
         type: Number,
-        max: 350,
+        max: 420,
         min: 0
     },
     title: {

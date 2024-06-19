@@ -32,7 +32,7 @@ module.exports.validateTicket = (req, res, next) => {
 module.exports.isAuthor = async (req,res,next) => {
     const {id} =req.params;
     const ticket = await Ticket.findById(id);
-    if (!ticket.author.equals(req.user._id) && !req.user.admin) {
+    if ((!ticket.author || !ticket.author._id.equals(req.user._id)) && !req.user.admin) {
         req.flash('error', 'You do not have permission to do that!');
         return res.redirect(`/tickets`);
     }

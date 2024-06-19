@@ -9,7 +9,7 @@ module.exports.ticketSchema = Joi.object({
     captured: Joi.string()
         .required(),
     capturedSlot: Joi
-        .when('captured', { is: 'SavedIC#', then: Joi.number().max(350).min(1).required() })
+        .when('captured', { is: 'SavedIC#', then: Joi.number().max(420).min(1).required() })
         .when('captured', { is: 'Snapped', then: Joi.number().max(5).min(1).required() })
     ,
     title: Joi.string()

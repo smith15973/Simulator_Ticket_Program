@@ -158,7 +158,7 @@
                     <% ticket.attachments.forEach((attach, i) => { %>
                         <div class="list-group-item list-group-item">
                             <% if (attach.url.includes('.gif') || attach.url.includes('.jpg') || attach.url.includes('.jpeg') || attach.url.includes('.png')) { %>
-                                <img data-bs-toggle="modal" data-bs-target="#enlargeImage-<%=i%>" id="image-<%= i %>" class="thumbnails" src="/attachments<%= attach.url %>">
+                                <img data-bs-toggle="modal" data-bs-target="#enlargeImage-<%=i%>" id="image-<%= i %>" class="thumbnails" src="<%= attach.url %>">
                                 <%- include('../partials/modals/enlargeImages', {attach:attach, i:i}) %>
                             <% } %>
                             <div class="d-inline justify-right">

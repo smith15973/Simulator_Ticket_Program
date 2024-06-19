@@ -39,7 +39,7 @@
                     <div class="carousel-inner">
                         <% imageArray.forEach((img,i)=> { %>
                             <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
-                                <img src="/attachments<%= img.url %>" class="d-block w-100 border border-dark border-5 rounded" alt="">
+                                <img src="<%= img.url %>" class="d-block w-100 border border-dark border-5 rounded" alt="">
                             </div>
                             <% });%>
                     </div>
@@ -72,7 +72,7 @@
                     </select>
                     <% pdfArray.forEach((pdf,i) => { %>
                         <div class="text-center embeddedPDF">
-                            <embed id="pdfWindow<%=i%>" class="rounded d-none" src="/attachments<%=pdfArray[i].url%>" width="800px" height="1000px" />
+                            <embed id="pdfWindow<%=i%>" class="rounded d-none" src="<%=pdfArray[i].url%>" width="800px" height="1000px" />
                         </div>
                     <% }) %>
                 </div>
@@ -85,7 +85,7 @@
             <% if (docsArray.length> 0) { %>
                 <div class="list-group">
                     <% docsArray.forEach((doc,i) => { %>
-                        <a download="<%=doc.originalName  %>" href="/attachments<%= doc.url %>" class="list-group-item list-group-item-action attachLinks"> <%= doc.originalName %> </a>
+                        <a download="<%=doc.originalName  %>" href="<%= doc.url %>" class="list-group-item list-group-item-action attachLinks"> <%= doc.originalName %> </a>
                     <% }) %>
                 </div>
              <% } %>

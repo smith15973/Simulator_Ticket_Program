@@ -1,6 +1,7 @@
-// if (process.env.NODE_ENV !== "production") {
-//     require('dotenv').config();
-// }
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
+
 const express = require('express');
 const path = require('path');
 const methodOverride = require('method-override');
@@ -16,6 +17,7 @@ const ExpressError = require('./utils/ExpressError');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user');
+const mongoSanitize = require('express-mongo-sanitize')
 
 
 const dbURL = 'mongodb://localhost:27017/simTicketSystem'
@@ -32,11 +34,12 @@ const app = express();
 app.engine('ejs', ejsMate);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.use(favicon(path.join(__dirname, 'public', 'images','svg', 'filter.svg')));
+app.use(favicon(path.join(__dirname, 'public', 'images', 'svg', 'filter.svg')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/attachments', express.static('/'));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+app.use(mongoSanitize());
 
 
 
@@ -96,10 +99,10 @@ app.all('*', (req, res, next) => {
 })
 
 
-app.use((err,req,res,next) => {
-    const {statusCode = 500} = err;
+app.use((err, req, res, next) => {
+    const { statusCode = 500 } = err;
     if (!err.message) err.message = 'Oh No, Something Went Wrong!';
-    res.status(statusCode).render('error', {err});
+    res.status(statusCode).render('error', { err });
 })
 
 /************LISTENER********************/
