@@ -5,6 +5,10 @@ const catchAsync = require('../utils/catchAsync');
 const passport = require('passport');
 const { storeReturnTo } = require('../middleware');
 
+router.get('/', (req, res) => {
+    res.redirect('/login')
+})
+
 router.get('/register', (req, res) => {
     res.render('users/register');
 });
@@ -27,6 +31,9 @@ router.post('/register', catchAsync(async (req, res) => {
 }));
 
 router.get('/login', (req, res) => {
+    if (res.locals.currentUser) {
+        return res.redirect('/tickets')
+    }
     res.render('users/login');
 });
 
