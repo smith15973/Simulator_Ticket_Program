@@ -2,6 +2,7 @@
 const { ticketSchema } = require('./schemas.js');
 const ExpressError = require('./utils/ExpressError');
 const Ticket = require('./models/ticket');
+const catchAsync = require('./utils/catchAsync.js');
 module.exports.isLoggedIn = (req,res,next) => {
     if (!req.isAuthenticated()) {
         req.session.returnTo = req.originalUrl;
@@ -29,7 +30,7 @@ module.exports.validateTicket = (req, res, next) => {
     }
 }
 
-module.exports.isAuthor = async (req,res,next) => {
+module.exports.isAuthor = catchAsync(async (req,res,next) => {
     const {id} =req.params;
     const ticket = await Ticket.findById(id);
     if ((!ticket.author || !ticket.author._id.equals(req.user._id)) && !req.user.admin) {
@@ -37,5 +38,5 @@ module.exports.isAuthor = async (req,res,next) => {
         return res.redirect(`/tickets`);
     }
     next();
-}
+});
 
